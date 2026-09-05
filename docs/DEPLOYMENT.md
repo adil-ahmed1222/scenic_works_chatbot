@@ -4,6 +4,8 @@
 
 Use **Native Python**, not Docker, unless you set the Dockerfile path yourself.
 
+API builds must run `bash render-build.sh` (or install `backend/requirements.txt`). Do not use the old `requirements-render.txt`-only install; that file previously omitted `sentence-transformers` and caused `ModuleNotFoundError`.
+
 The failure `open Dockerfile: no such file or directory` happens when Render's root is the GitHub repo root and Environment is Docker. There is now a root `Dockerfile` as a fallback, but **Free Tier should use Python**.
 
 ### Service A — API
@@ -12,7 +14,7 @@ The failure `open Dockerfile: no such file or directory` happens when Render's r
 | --- | --- |
 | Environment | **Python 3** |
 | Root Directory | `backend` |
-| Build Command | `pip install -r requirements-render.txt` |
+| Build Command | `bash render-build.sh` |
 | Start Command | `python start.py` |
 | Health Check | `/health` |
 

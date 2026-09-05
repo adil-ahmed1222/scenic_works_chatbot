@@ -7,6 +7,8 @@ import os
 import uvicorn
 
 if __name__ == "__main__":
+    from sentence_transformers import SentenceTransformer  # noqa: F401
+
     port = int(os.getenv("PORT", "8000"))
     uvicorn.run(
         "main:app",
