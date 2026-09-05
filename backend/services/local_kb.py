@@ -110,6 +110,7 @@ def _load_index() -> tuple[list[dict[str, Any]], list[list[float]]]:
 
 
 def warmup_local_kb() -> None:
+    """Optional manual preload. Startup must not call this on 512MB hosts."""
     _load_index()
 
 

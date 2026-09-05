@@ -5,7 +5,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _BACKEND_DIR = Path(__file__).resolve().parent
@@ -45,8 +45,8 @@ class Settings(BaseSettings):
     supabase_service_role_key: str = ""
     supabase_storage_bucket: str = "tts-audio"
 
-    embedding_model: str = "BAAI/bge-m3"
-    embedding_dim: int = 1024
+    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    embedding_dim: int = 384
     embedding_provider: Literal["local", "huggingface"] = "local"
     hf_api_token: str = ""
     hf_embedding_endpoint: str = ""
@@ -75,6 +75,17 @@ class Settings(BaseSettings):
         if isinstance(value, str):
             return value.strip().strip('"').strip("'")
         return value
+
+    @model_validator(mode="after")
+    def use_lightweight_embeddings(self) -> "Settings":
+        name = (self.embedding_model or "").strip()
+        lowered = name.lower()
+        if not name or "bge-m3" in lowered or "bge_m3" in lowered:
+            self.embedding_model = "sentence-transformers/all-MiniLM-L6-v2"
+            self.embedding_dim = 384
+        elif "minilm" in lowered:
+            self.embedding_dim = 384
+        return self
 
     @property
     def origins(self) -> list[str]:

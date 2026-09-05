@@ -1,4 +1,4 @@
-"""Generate BAAI/bge-m3 embeddings and upsert them into Supabase pgvector."""
+"""Generate all-MiniLM-L6-v2 embeddings and upsert them into Supabase pgvector."""
 
 from __future__ import annotations
 
@@ -19,9 +19,17 @@ if str(KB_DIR) not in sys.path:
 
 from knowledge_base_paths import CHUNKS_FILE  # noqa: E402
 
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3")
-EMBEDDING_DIM = int(os.getenv("EMBEDDING_DIM", "1024"))
-BATCH_SIZE = int(os.getenv("EMBEDDING_BATCH_SIZE", "16"))
+_DEFAULT_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+_raw_model = os.getenv("EMBEDDING_MODEL", _DEFAULT_MODEL)
+EMBEDDING_MODEL = (
+    _DEFAULT_MODEL
+    if "bge-m3" in (_raw_model or "").lower()
+    else (_raw_model or _DEFAULT_MODEL)
+)
+EMBEDDING_DIM = int(os.getenv("EMBEDDING_DIM", "384"))
+if "minilm" in EMBEDDING_MODEL.lower():
+    EMBEDDING_DIM = 384
+BATCH_SIZE = int(os.getenv("EMBEDDING_BATCH_SIZE", "8"))
 PROVIDER = os.getenv("EMBEDDING_PROVIDER", "local")
 
 
@@ -41,7 +49,7 @@ class Embedder:
             return
         from sentence_transformers import SentenceTransformer
 
-        self._model = SentenceTransformer(EMBEDDING_MODEL)
+        self._model = SentenceTransformer(EMBEDDING_MODEL, device="cpu")
 
     def encode(self, texts: Sequence[str]) -> list[list[float]]:
         if self.provider == "huggingface":

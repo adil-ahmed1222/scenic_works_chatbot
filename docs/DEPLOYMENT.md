@@ -33,7 +33,7 @@ Required API env vars: `APP_ENV=production`, `EMBEDDING_PROVIDER=huggingface`, `
 
 Required web env vars: `BACKEND_URL` (API `onrender.com` URL), `WIDGET_API_SECRET` (same value).
 
-Do not use `EMBEDDING_PROVIDER=local` on the Free tier. Local `bge-m3` + torch will exceed memory.
+Do not preload embeddings on the Free tier. The API lazy-loads `all-MiniLM-L6-v2` (384-dim) on first chat. Prefer `EMBEDDING_PROVIDER=huggingface` so torch never loads the model in the 512MB process. Dashboard `EMBEDDING_MODEL=BAAI/bge-m3` is remapped automatically. After switching models, apply `supabase/migrations/20260906000002_minilm_embedding_dim.sql` and re-index.
 
 ---
 
@@ -59,7 +59,7 @@ This stack deploys as three services:
 1. Create a new Railway service from this repo.
 2. Set the root directory to `backend` (or deploy with `backend/Dockerfile`).
 3. Add every backend variable from [ENVIRONMENT.md](ENVIRONMENT.md).
-4. Allocate at least **2 GB RAM** if `EMBEDDING_PROVIDER=local` (BAAI/bge-m3). For smaller instances set `EMBEDDING_PROVIDER=huggingface` and `HF_API_TOKEN`.
+4. Allocate at least **1 GB RAM** if `EMBEDDING_PROVIDER=local` (`all-MiniLM-L6-v2`). For Render Free / 512MB set `EMBEDDING_PROVIDER=huggingface` and `HF_API_TOKEN`.
 5. Health check path: `/health`.
 6. Note the public URL, e.g. `https://scenic-works-api.up.railway.app`.
 
@@ -99,7 +99,7 @@ Seed pages under `knowledge-base/raw/` let you index before the first crawl.
 
 GitHub Actions workflow `.github/workflows/daily-knowledge-update.yml` runs:
 
-Website → incremental crawl → process → chunk → bge-m3 → Supabase
+Website → incremental crawl → process → chunk → all-MiniLM-L6-v2 → Supabase
 
 Add repository secrets: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, optional `HF_API_TOKEN`.
 

@@ -18,6 +18,10 @@ services:
         value: production
       - key: EMBEDDING_PROVIDER
         value: huggingface
+      - key: EMBEDDING_MODEL
+        value: sentence-transformers/all-MiniLM-L6-v2
+      - key: EMBEDDING_DIM
+        value: "384"
       - key: SUPABASE_STORAGE_BUCKET
         value: tts-audio
       - key: GROQ_API_KEY

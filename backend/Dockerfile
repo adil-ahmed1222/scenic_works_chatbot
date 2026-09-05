@@ -5,6 +5,9 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONUTF8=1
+ENV EMBEDDING_PROVIDER=huggingface
+ENV EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+ENV EMBEDDING_DIM=384
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \

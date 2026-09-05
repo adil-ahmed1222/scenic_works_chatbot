@@ -20,9 +20,9 @@ Copy `.env.example` to `.env`. **Never** put `GROQ_API_KEY`, `ELEVENLABS_API_KEY
 | `SUPABASE_URL` | yes | `https://xxxx.supabase.co` |
 | `SUPABASE_SERVICE_ROLE_KEY` | yes | Server only |
 | `SUPABASE_STORAGE_BUCKET` | no | `tts-audio` |
-| `EMBEDDING_MODEL` | no | `BAAI/bge-m3` |
-| `EMBEDDING_DIM` | no | `1024` |
-| `EMBEDDING_PROVIDER` | no | `local` or `huggingface` |
+| `EMBEDDING_MODEL` | no | `sentence-transformers/all-MiniLM-L6-v2` (legacy `BAAI/bge-m3` is remapped) |
+| `EMBEDDING_DIM` | no | `384` |
+| `EMBEDDING_PROVIDER` | no | `local` or `huggingface` (use `huggingface` on Render Free) |
 | `HF_API_TOKEN` | if HF | Hugging Face Inference |
 | `RAG_TOP_K` | no | `5` |
 | `RAG_MIN_SIMILARITY` | no | `0.35` |

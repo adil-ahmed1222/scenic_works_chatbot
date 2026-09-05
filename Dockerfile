@@ -8,6 +8,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONUTF8=1
 ENV EMBEDDING_PROVIDER=huggingface
+ENV EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+ENV EMBEDDING_DIM=384
 
 COPY backend/requirements.txt backend/requirements-render.txt /app/backend/
 RUN python -m pip install --upgrade pip \

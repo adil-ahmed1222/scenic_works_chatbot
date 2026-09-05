@@ -9,7 +9,7 @@ create extension if not exists pgcrypto;
 create table if not exists public.documents (
   id text primary key,
   content text not null,
-  embedding vector(1024),
+  embedding vector(384),
   source_url text,
   language text,
   category text,
@@ -78,7 +78,7 @@ create table if not exists public.crawl_status (
 -- Similarity search RPC
 -- ---------------------------------------------------------------------------
 create or replace function public.match_documents(
-  query_embedding vector(1024),
+  query_embedding vector(384),
   match_count int default 5,
   filter_language text default null,
   min_similarity float default 0.0

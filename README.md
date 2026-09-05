@@ -11,7 +11,7 @@ Website (adroitiame.com)
   Crawl4AI scraper  ──►  knowledge-base/raw
         │
         ▼
-  Processor / Chunker / bge-m3 embeddings
+  Processor / Chunker / all-MiniLM-L6-v2 embeddings
         │
         ▼
   Supabase PostgreSQL + pgvector
