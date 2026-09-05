@@ -1,0 +1,66 @@
+# Environment
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.log
+
+# Node / Next.js
+node_modules/
+frontend/.next/
+frontend/.next.nosync/
+frontend/.next-local/
+frontend/out/
+frontend/dist/
+.turbo/
+*.tsbuildinfo
+
+# Knowledge base artifacts (keep folder structure)
+knowledge-base/raw/*.json
+!knowledge-base/raw/.gitkeep
+!knowledge-base/raw/seed-*.json
+knowledge-base/processed/
+knowledge-base/chunks/
+scraper/data/
+scraper/logs/
+backend/static/audio/
+backend/logs/
+
+# Models / caches
+.cache/
+*.bin
+*.pt
+*.onnx
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Docker
+docker-data/
+
+# Supabase CLI
+supabase/.temp/
+
+# Test outputs
+tests/results/
+tests/reports/

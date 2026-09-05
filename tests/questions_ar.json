@@ -1,0 +1,817 @@
+[
+  {
+    "id": "ar-001",
+    "lang": "ar",
+    "q": "ما هي سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "معرض"
+    ]
+  },
+  {
+    "id": "ar-002",
+    "lang": "ar",
+    "q": "بماذا تتخصص سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "أجنحة"
+    ]
+  },
+  {
+    "id": "ar-003",
+    "lang": "ar",
+    "q": "ما الخدمات التي تقدمها سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "معارض"
+    ]
+  },
+  {
+    "id": "ar-004",
+    "lang": "ar",
+    "q": "هل تصممون أجنحة المعارض؟",
+    "expect": "grounded",
+    "must_include": [
+      "جناح"
+    ]
+  },
+  {
+    "id": "ar-005",
+    "lang": "ar",
+    "q": "هل تبنون أجنحة المعارض؟",
+    "expect": "grounded",
+    "must_include": [
+      "جناح"
+    ]
+  },
+  {
+    "id": "ar-006",
+    "lang": "ar",
+    "q": "هل تقومون بتركيب الأجنحة؟",
+    "expect": "grounded",
+    "must_include": [
+      "تركيب"
+    ]
+  },
+  {
+    "id": "ar-007",
+    "lang": "ar",
+    "q": "هل تقدمون تجارب معارض ثلاثية الأبعاد؟",
+    "expect": "grounded",
+    "must_include": [
+      "ثلاث"
+    ]
+  },
+  {
+    "id": "ar-008",
+    "lang": "ar",
+    "q": "ما خدمات الفعاليات لديكم؟",
+    "expect": "grounded",
+    "must_include": [
+      "فعال"
+    ]
+  },
+  {
+    "id": "ar-009",
+    "lang": "ar",
+    "q": "هل تنظمون الفعاليات المؤسسية؟",
+    "expect": "grounded",
+    "must_include": [
+      "فعال"
+    ]
+  },
+  {
+    "id": "ar-010",
+    "lang": "ar",
+    "q": "هل تنفذون إطلاق المنتجات؟",
+    "expect": "grounded",
+    "must_include": [
+      "إطلاق"
+    ]
+  },
+  {
+    "id": "ar-011",
+    "lang": "ar",
+    "q": "هل تنظمون المهرجانات الخارجية؟",
+    "expect": "grounded",
+    "must_include": [
+      "مهرجان"
+    ]
+  },
+  {
+    "id": "ar-012",
+    "lang": "ar",
+    "q": "ماذا يشمل إنتاج الفعاليات؟",
+    "expect": "grounded",
+    "must_include": [
+      "إضاءة"
+    ]
+  },
+  {
+    "id": "ar-013",
+    "lang": "ar",
+    "q": "هل توفرون الإضاءة والصوت؟",
+    "expect": "grounded",
+    "must_include": [
+      "صوت"
+    ]
+  },
+  {
+    "id": "ar-014",
+    "lang": "ar",
+    "q": "هل تقدمون إدارة ميدانية للفعاليات؟",
+    "expect": "grounded",
+    "must_include": [
+      "إدارة"
+    ]
+  },
+  {
+    "id": "ar-015",
+    "lang": "ar",
+    "q": "ما خدمات الهوية الداخلية؟",
+    "expect": "grounded",
+    "must_include": [
+      "لافتات"
+    ]
+  },
+  {
+    "id": "ar-016",
+    "lang": "ar",
+    "q": "ما خدمات الهوية الخارجية؟",
+    "expect": "grounded",
+    "must_include": [
+      "لوحات"
+    ]
+  },
+  {
+    "id": "ar-017",
+    "lang": "ar",
+    "q": "هل تنفذون تغليف المركبات؟",
+    "expect": "grounded",
+    "must_include": [
+      "مركبات"
+    ]
+  },
+  {
+    "id": "ar-018",
+    "lang": "ar",
+    "q": "هل تصنعون لافتات المباني؟",
+    "expect": "grounded",
+    "must_include": [
+      "لافتات"
+    ]
+  },
+  {
+    "id": "ar-019",
+    "lang": "ar",
+    "q": "ما هو العرض داخل المتاجر؟",
+    "expect": "grounded",
+    "must_include": [
+      "عرض"
+    ]
+  },
+  {
+    "id": "ar-020",
+    "lang": "ar",
+    "q": "هل تنفذون التشطيب الداخلي؟",
+    "expect": "grounded",
+    "must_include": [
+      "تشطيب"
+    ]
+  },
+  {
+    "id": "ar-021",
+    "lang": "ar",
+    "q": "هل أنتم مقاول فيت أوت متكامل؟",
+    "expect": "grounded",
+    "must_include": [
+      "فيت"
+    ]
+  },
+  {
+    "id": "ar-022",
+    "lang": "ar",
+    "q": "ما القطاعات التي تعملون عليها في التشطيب؟",
+    "expect": "grounded",
+    "must_include": [
+      "تجزئة"
+    ]
+  },
+  {
+    "id": "ar-023",
+    "lang": "ar",
+    "q": "هل تشطبون المطاعم؟",
+    "expect": "grounded",
+    "must_include": [
+      "مطاعم"
+    ]
+  },
+  {
+    "id": "ar-024",
+    "lang": "ar",
+    "q": "هل تعملون على المكاتب؟",
+    "expect": "grounded",
+    "must_include": [
+      "مكاتب"
+    ]
+  },
+  {
+    "id": "ar-025",
+    "lang": "ar",
+    "q": "هل تعملون على المنشآت الصحية؟",
+    "expect": "grounded",
+    "must_include": [
+      "صحية"
+    ]
+  },
+  {
+    "id": "ar-026",
+    "lang": "ar",
+    "q": "هل تعملون على الضيافة والفنادق؟",
+    "expect": "grounded",
+    "must_include": [
+      "ضيافة"
+    ]
+  },
+  {
+    "id": "ar-027",
+    "lang": "ar",
+    "q": "هل تصنعون البرجولات؟",
+    "expect": "grounded",
+    "must_include": [
+      "برجو"
+    ]
+  },
+  {
+    "id": "ar-028",
+    "lang": "ar",
+    "q": "هل تقدمون حلول المسابح والمناظر؟",
+    "expect": "grounded",
+    "must_include": [
+      "مسابح"
+    ]
+  },
+  {
+    "id": "ar-029",
+    "lang": "ar",
+    "q": "ما مساحة منشأتكم؟",
+    "expect": "grounded",
+    "must_include": [
+      "3000"
+    ]
+  },
+  {
+    "id": "ar-030",
+    "lang": "ar",
+    "q": "منذ متى تعمل المنشأة؟",
+    "expect": "grounded",
+    "must_include": [
+      "2010"
+    ]
+  },
+  {
+    "id": "ar-031",
+    "lang": "ar",
+    "q": "ما الآلات المتوفرة في المنشأة؟",
+    "expect": "grounded",
+    "must_include": [
+      "CNC"
+    ]
+  },
+  {
+    "id": "ar-032",
+    "lang": "ar",
+    "q": "هل لديكم قواطع ليزر؟",
+    "expect": "grounded",
+    "must_include": [
+      "ليزر"
+    ]
+  },
+  {
+    "id": "ar-033",
+    "lang": "ar",
+    "q": "هل تستخدمون CAD/CAM؟",
+    "expect": "grounded",
+    "must_include": [
+      "CAD"
+    ]
+  },
+  {
+    "id": "ar-034",
+    "lang": "ar",
+    "q": "كم يمكنكم تقليل الهدر؟",
+    "expect": "grounded",
+    "must_include": [
+      "30"
+    ]
+  },
+  {
+    "id": "ar-035",
+    "lang": "ar",
+    "q": "ما المواد الصديقة للبيئة التي تستخدمونها؟",
+    "expect": "grounded",
+    "must_include": [
+      "خشب"
+    ]
+  },
+  {
+    "id": "ar-036",
+    "lang": "ar",
+    "q": "هل تستخدمون معادن معاد تدويرها؟",
+    "expect": "grounded",
+    "must_include": [
+      "تدوير"
+    ]
+  },
+  {
+    "id": "ar-037",
+    "lang": "ar",
+    "q": "هل تستخدمون تشطيبات منخفضة المركبات العضوية؟",
+    "expect": "grounded",
+    "must_include": [
+      "VOC"
+    ]
+  },
+  {
+    "id": "ar-038",
+    "lang": "ar",
+    "q": "هل الإنتاج يعمل بالطاقة الشمسية؟",
+    "expect": "grounded",
+    "must_include": [
+      "شمسية"
+    ]
+  },
+  {
+    "id": "ar-039",
+    "lang": "ar",
+    "q": "هل تعيدون تدوير المخلفات؟",
+    "expect": "grounded",
+    "must_include": [
+      "تدوير"
+    ]
+  },
+  {
+    "id": "ar-040",
+    "lang": "ar",
+    "q": "هل تستخدمون تصاميم معيارية قابلة لإعادة الاستخدام؟",
+    "expect": "grounded",
+    "must_include": [
+      "معيار"
+    ]
+  },
+  {
+    "id": "ar-041",
+    "lang": "ar",
+    "q": "في كم قارة تعملون؟",
+    "expect": "grounded",
+    "must_include": [
+      "2"
+    ]
+  },
+  {
+    "id": "ar-042",
+    "lang": "ar",
+    "q": "في كم دولة عملتم؟",
+    "expect": "grounded",
+    "must_include": [
+      "8"
+    ]
+  },
+  {
+    "id": "ar-043",
+    "lang": "ar",
+    "q": "كم معرضًا نفذتم؟",
+    "expect": "grounded",
+    "must_include": [
+      "500"
+    ]
+  },
+  {
+    "id": "ar-044",
+    "lang": "ar",
+    "q": "كم عدد العملاء؟",
+    "expect": "grounded",
+    "must_include": [
+      "100"
+    ]
+  },
+  {
+    "id": "ar-045",
+    "lang": "ar",
+    "q": "أين تقع سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "السعودية"
+    ]
+  },
+  {
+    "id": "ar-046",
+    "lang": "ar",
+    "q": "هل لديكم مكتب في دبي؟",
+    "expect": "grounded",
+    "must_include": [
+      "دبي"
+    ]
+  },
+  {
+    "id": "ar-047",
+    "lang": "ar",
+    "q": "هل تتواجدون في السعودية؟",
+    "expect": "grounded",
+    "must_include": [
+      "السعودية"
+    ]
+  },
+  {
+    "id": "ar-048",
+    "lang": "ar",
+    "q": "ما رؤية سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "عالمي"
+    ]
+  },
+  {
+    "id": "ar-049",
+    "lang": "ar",
+    "q": "ما رسالة سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "تجارب"
+    ]
+  },
+  {
+    "id": "ar-050",
+    "lang": "ar",
+    "q": "من قدّم شهادة عن سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "Carrier"
+    ]
+  },
+  {
+    "id": "ar-051",
+    "lang": "ar",
+    "q": "هل تنسقون أعمال MEP؟",
+    "expect": "grounded",
+    "must_include": [
+      "MEP"
+    ]
+  },
+  {
+    "id": "ar-052",
+    "lang": "ar",
+    "q": "هل تقدمون إدارة المشاريع؟",
+    "expect": "grounded",
+    "must_include": [
+      "مشاريع"
+    ]
+  },
+  {
+    "id": "ar-053",
+    "lang": "ar",
+    "q": "هل تعملون من الفكرة حتى التسليم؟",
+    "expect": "grounded",
+    "must_include": [
+      "تسليم"
+    ]
+  },
+  {
+    "id": "ar-054",
+    "lang": "ar",
+    "q": "ما منهجكم في تصميم المعارض؟",
+    "expect": "grounded",
+    "must_include": [
+      "هوية"
+    ]
+  },
+  {
+    "id": "ar-055",
+    "lang": "ar",
+    "q": "هل خدمات المعارض متكاملة من البداية للنهاية؟",
+    "expect": "grounded",
+    "must_include": [
+      "متكامل"
+    ]
+  },
+  {
+    "id": "ar-056",
+    "lang": "ar",
+    "q": "هل تصممون الرسومات الجدارية؟",
+    "expect": "grounded",
+    "must_include": [
+      "جدار"
+    ]
+  },
+  {
+    "id": "ar-057",
+    "lang": "ar",
+    "q": "هل تصممون عروض التجزئة؟",
+    "expect": "grounded",
+    "must_include": [
+      "تجزئة"
+    ]
+  },
+  {
+    "id": "ar-058",
+    "lang": "ar",
+    "q": "هل تقدمون هوية للمكاتب؟",
+    "expect": "grounded",
+    "must_include": [
+      "مكاتب"
+    ]
+  },
+  {
+    "id": "ar-059",
+    "lang": "ar",
+    "q": "هل تركزون على الاستدامة؟",
+    "expect": "grounded",
+    "must_include": [
+      "استدام"
+    ]
+  },
+  {
+    "id": "ar-060",
+    "lang": "ar",
+    "q": "هل تساعدون في أهداف الحوكمة البيئية؟",
+    "expect": "grounded",
+    "must_include": [
+      "ESG"
+    ]
+  },
+  {
+    "id": "ar-061",
+    "lang": "ar",
+    "q": "وضح من موقعكم: ما هي سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "معرض"
+    ]
+  },
+  {
+    "id": "ar-062",
+    "lang": "ar",
+    "q": "وضح من موقعكم: بماذا تتخصص سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "أجنحة"
+    ]
+  },
+  {
+    "id": "ar-063",
+    "lang": "ar",
+    "q": "وضح من موقعكم: ما الخدمات التي تقدمها سينيك ووركس؟",
+    "expect": "grounded",
+    "must_include": [
+      "معارض"
+    ]
+  },
+  {
+    "id": "ar-064",
+    "lang": "ar",
+    "q": "وضح من موقعكم: هل تصممون أجنحة المعارض؟",
+    "expect": "grounded",
+    "must_include": [
+      "جناح"
+    ]
+  },
+  {
+    "id": "ar-065",
+    "lang": "ar",
+    "q": "وضح من موقعكم: هل تبنون أجنحة المعارض؟",
+    "expect": "grounded",
+    "must_include": [
+      "جناح"
+    ]
+  },
+  {
+    "id": "ar-066",
+    "lang": "ar",
+    "q": "وضح من موقعكم: هل تقومون بتركيب الأجنحة؟",
+    "expect": "grounded",
+    "must_include": [
+      "تركيب"
+    ]
+  },
+  {
+    "id": "ar-067",
+    "lang": "ar",
+    "q": "وضح من موقعكم: هل تقدمون تجارب معارض ثلاثية الأبعاد؟",
+    "expect": "grounded",
+    "must_include": [
+      "ثلاث"
+    ]
+  },
+  {
+    "id": "ar-068",
+    "lang": "ar",
+    "q": "وضح من موقعكم: ما خدمات الفعاليات لديكم؟",
+    "expect": "grounded",
+    "must_include": [
+      "فعال"
+    ]
+  },
+  {
+    "id": "ar-069",
+    "lang": "ar",
+    "q": "وضح من موقعكم: هل تنظمون الفعاليات المؤسسية؟",
+    "expect": "grounded",
+    "must_include": [
+      "فعال"
+    ]
+  },
+  {
+    "id": "ar-070",
+    "lang": "ar",
+    "q": "وضح من موقعكم: هل تنفذون إطلاق المنتجات؟",
+    "expect": "grounded",
+    "must_include": [
+      "إطلاق"
+    ]
+  },
+  {
+    "id": "ar-071",
+    "lang": "ar",
+    "q": "كم سعر جناح معرض 6×6؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-072",
+    "lang": "ar",
+    "q": "ما تكلفة البوث بالدولار؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-073",
+    "lang": "ar",
+    "q": "أعطني عرض سعر ثابت 50,000 ريال.",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-074",
+    "lang": "ar",
+    "q": "من هو الرئيس التنفيذي لسينيك ووركس؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-075",
+    "lang": "ar",
+    "q": "ما رقم السجل التجاري؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-076",
+    "lang": "ar",
+    "q": "اذكر أسماء الموظفين.",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-077",
+    "lang": "ar",
+    "q": "ما رقم واتساب دبي؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-078",
+    "lang": "ar",
+    "q": "ما عنوان الشارع في الرياض ورقم الوحدة؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-079",
+    "lang": "ar",
+    "q": "ما الجوائز التي حصلتم عليها عام 2024؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-080",
+    "lang": "ar",
+    "q": "هل لديكم شهادة ISO 9001؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-081",
+    "lang": "ar",
+    "q": "هل تعملون في نيويورك؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-082",
+    "lang": "ar",
+    "q": "هل لديكم مكتب في لندن؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-083",
+    "lang": "ar",
+    "q": "من منافسوكم؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-084",
+    "lang": "ar",
+    "q": "هل نفذتم متجر آبل في دبي مول؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-085",
+    "lang": "ar",
+    "q": "هل الشركة مملوكة لصندوق استثماري؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-086",
+    "lang": "ar",
+    "q": "ما الإيراد السنوي؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-087",
+    "lang": "ar",
+    "q": "كم عدد عمال التصنيع؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-088",
+    "lang": "ar",
+    "q": "ما مدة التنفيذ بالأيام لجناح مخصص؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-089",
+    "lang": "ar",
+    "q": "هل تقدمون تمويلاً بنسبة صفر؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-090",
+    "lang": "ar",
+    "q": "ما الرقم الضريبي؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-091",
+    "lang": "ar",
+    "q": "هل تضمنون الفوز بجائزة تصميم؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-092",
+    "lang": "ar",
+    "q": "هل تبيعون أثاث معارض مستعمل؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-093",
+    "lang": "ar",
+    "q": "ما برنامج إدارة العملاء الداخلي؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-094",
+    "lang": "ar",
+    "q": "شارك عقد عميل سري.",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-095",
+    "lang": "ar",
+    "q": "ما راتب مدير المشاريع لديكم؟",
+    "expect": "fallback"
+  },
+  {
+    "id": "ar-096",
+    "lang": "ar",
+    "q": "أحتاج عرض سعر لجناح معرض في الرياض.",
+    "expect": "grounded",
+    "expect_lead": true
+  },
+  {
+    "id": "ar-097",
+    "lang": "ar",
+    "q": "أرسلوا مقترحًا لبوث 12×6.",
+    "expect": "grounded",
+    "expect_lead": true
+  },
+  {
+    "id": "ar-098",
+    "lang": "ar",
+    "q": "نحتاج تسعيرة لتجهيز فعالية الشهر القادم.",
+    "expect": "grounded",
+    "expect_lead": true
+  },
+  {
+    "id": "ar-099",
+    "lang": "ar",
+    "q": "طلب عرض لتشطيب محل فاخر.",
+    "expect": "grounded",
+    "expect_lead": true
+  },
+  {
+    "id": "ar-100",
+    "lang": "ar",
+    "q": "هل يمكنكم تقديم عرض لـ FABEX؟",
+    "expect": "grounded",
+    "expect_lead": true
+  }
+]

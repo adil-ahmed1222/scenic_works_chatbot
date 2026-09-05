@@ -1,0 +1,7 @@
+crawl4ai>=0.6.3
+beautifulsoup4>=4.12.3
+lxml>=5.3.0
+httpx>=0.28.1
+python-dotenv>=1.0.1
+langdetect>=1.0.9
+tenacity>=9.0.0

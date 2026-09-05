@@ -1,0 +1,821 @@
+[
+  {
+    "id": "en-001",
+    "lang": "en",
+    "q": "What is Scenic Works?",
+    "expect": "grounded",
+    "must_include": [
+      "creative-technical",
+      "exhibition"
+    ]
+  },
+  {
+    "id": "en-002",
+    "lang": "en",
+    "q": "What does Scenic Works specialize in?",
+    "expect": "grounded",
+    "must_include": [
+      "exhibition",
+      "fit-out"
+    ]
+  },
+  {
+    "id": "en-003",
+    "lang": "en",
+    "q": "What services does Scenic Works offer?",
+    "expect": "grounded",
+    "must_include": [
+      "exhibitions"
+    ]
+  },
+  {
+    "id": "en-004",
+    "lang": "en",
+    "q": "Does Scenic Works design exhibition stands?",
+    "expect": "grounded",
+    "must_include": [
+      "exhibition"
+    ]
+  },
+  {
+    "id": "en-005",
+    "lang": "en",
+    "q": "Do you build exhibition stands?",
+    "expect": "grounded",
+    "must_include": [
+      "stand"
+    ]
+  },
+  {
+    "id": "en-006",
+    "lang": "en",
+    "q": "Do you install exhibition stands?",
+    "expect": "grounded",
+    "must_include": [
+      "install"
+    ]
+  },
+  {
+    "id": "en-007",
+    "lang": "en",
+    "q": "Do you create 3D exhibition experiences?",
+    "expect": "grounded",
+    "must_include": [
+      "3D"
+    ]
+  },
+  {
+    "id": "en-008",
+    "lang": "en",
+    "q": "What event services do you provide?",
+    "expect": "grounded",
+    "must_include": [
+      "event"
+    ]
+  },
+  {
+    "id": "en-009",
+    "lang": "en",
+    "q": "Can you produce corporate events?",
+    "expect": "grounded",
+    "must_include": [
+      "corporate"
+    ]
+  },
+  {
+    "id": "en-010",
+    "lang": "en",
+    "q": "Do you handle product launches?",
+    "expect": "grounded",
+    "must_include": [
+      "product launch"
+    ]
+  },
+  {
+    "id": "en-011",
+    "lang": "en",
+    "q": "Do you produce outdoor festivals?",
+    "expect": "grounded",
+    "must_include": [
+      "festival"
+    ]
+  },
+  {
+    "id": "en-012",
+    "lang": "en",
+    "q": "What is included in event production?",
+    "expect": "grounded",
+    "must_include": [
+      "staging"
+    ]
+  },
+  {
+    "id": "en-013",
+    "lang": "en",
+    "q": "Do you provide lighting and AV?",
+    "expect": "grounded",
+    "must_include": [
+      "AV"
+    ]
+  },
+  {
+    "id": "en-014",
+    "lang": "en",
+    "q": "Do you offer on-site event management?",
+    "expect": "grounded",
+    "must_include": [
+      "on-site"
+    ]
+  },
+  {
+    "id": "en-015",
+    "lang": "en",
+    "q": "What indoor branding services do you offer?",
+    "expect": "grounded",
+    "must_include": [
+      "signage"
+    ]
+  },
+  {
+    "id": "en-016",
+    "lang": "en",
+    "q": "What outdoor branding do you offer?",
+    "expect": "grounded",
+    "must_include": [
+      "billboard"
+    ]
+  },
+  {
+    "id": "en-017",
+    "lang": "en",
+    "q": "Do you produce vehicle wraps?",
+    "expect": "grounded",
+    "must_include": [
+      "wrap"
+    ]
+  },
+  {
+    "id": "en-018",
+    "lang": "en",
+    "q": "Do you make building signage?",
+    "expect": "grounded",
+    "must_include": [
+      "signage"
+    ]
+  },
+  {
+    "id": "en-019",
+    "lang": "en",
+    "q": "What is instore display?",
+    "expect": "grounded",
+    "must_include": [
+      "display"
+    ]
+  },
+  {
+    "id": "en-020",
+    "lang": "en",
+    "q": "Does Scenic Works do interior fit-outs?",
+    "expect": "grounded",
+    "must_include": [
+      "fitout"
+    ]
+  },
+  {
+    "id": "en-021",
+    "lang": "en",
+    "q": "Is Scenic Works a turnkey fitout contractor?",
+    "expect": "grounded",
+    "must_include": [
+      "turnkey"
+    ]
+  },
+  {
+    "id": "en-022",
+    "lang": "en",
+    "q": "Which sectors do you fit out?",
+    "expect": "grounded",
+    "must_include": [
+      "retail"
+    ]
+  },
+  {
+    "id": "en-023",
+    "lang": "en",
+    "q": "Do you fit out restaurants?",
+    "expect": "grounded",
+    "must_include": [
+      "F&B"
+    ]
+  },
+  {
+    "id": "en-024",
+    "lang": "en",
+    "q": "Do you work on corporate offices?",
+    "expect": "grounded",
+    "must_include": [
+      "office"
+    ]
+  },
+  {
+    "id": "en-025",
+    "lang": "en",
+    "q": "Do you work on healthcare facilities?",
+    "expect": "grounded",
+    "must_include": [
+      "healthcare"
+    ]
+  },
+  {
+    "id": "en-026",
+    "lang": "en",
+    "q": "Do you work on hospitality interiors?",
+    "expect": "grounded",
+    "must_include": [
+      "hospitality"
+    ]
+  },
+  {
+    "id": "en-027",
+    "lang": "en",
+    "q": "Do you build custom pergolas?",
+    "expect": "grounded",
+    "must_include": [
+      "pergola"
+    ]
+  },
+  {
+    "id": "en-028",
+    "lang": "en",
+    "q": "Do you offer landscape and swimming pool solutions?",
+    "expect": "grounded",
+    "must_include": [
+      "pool"
+    ]
+  },
+  {
+    "id": "en-029",
+    "lang": "en",
+    "q": "How large is your facility?",
+    "expect": "grounded",
+    "must_include": [
+      "3,000"
+    ]
+  },
+  {
+    "id": "en-030",
+    "lang": "en",
+    "q": "When did the facility start operating?",
+    "expect": "grounded",
+    "must_include": [
+      "2010"
+    ]
+  },
+  {
+    "id": "en-031",
+    "lang": "en",
+    "q": "What machines are in the facility?",
+    "expect": "grounded",
+    "must_include": [
+      "CNC"
+    ]
+  },
+  {
+    "id": "en-032",
+    "lang": "en",
+    "q": "Do you use laser cutters?",
+    "expect": "grounded",
+    "must_include": [
+      "laser"
+    ]
+  },
+  {
+    "id": "en-033",
+    "lang": "en",
+    "q": "Do you use CAD/CAM?",
+    "expect": "grounded",
+    "must_include": [
+      "CAD"
+    ]
+  },
+  {
+    "id": "en-034",
+    "lang": "en",
+    "q": "How much material waste can you reduce?",
+    "expect": "grounded",
+    "must_include": [
+      "30%"
+    ]
+  },
+  {
+    "id": "en-035",
+    "lang": "en",
+    "q": "What eco-friendly materials do you use?",
+    "expect": "grounded",
+    "must_include": [
+      "FSC"
+    ]
+  },
+  {
+    "id": "en-036",
+    "lang": "en",
+    "q": "Do you use recycled metals?",
+    "expect": "grounded",
+    "must_include": [
+      "recycled"
+    ]
+  },
+  {
+    "id": "en-037",
+    "lang": "en",
+    "q": "Do you use low-VOC finishes?",
+    "expect": "grounded",
+    "must_include": [
+      "VOC"
+    ]
+  },
+  {
+    "id": "en-038",
+    "lang": "en",
+    "q": "Is production solar-powered?",
+    "expect": "grounded",
+    "must_include": [
+      "solar"
+    ]
+  },
+  {
+    "id": "en-039",
+    "lang": "en",
+    "q": "Do you recycle scrap?",
+    "expect": "grounded",
+    "must_include": [
+      "recycl"
+    ]
+  },
+  {
+    "id": "en-040",
+    "lang": "en",
+    "q": "Do you use modular reusable designs?",
+    "expect": "grounded",
+    "must_include": [
+      "modular"
+    ]
+  },
+  {
+    "id": "en-041",
+    "lang": "en",
+    "q": "How many continents do you operate in?",
+    "expect": "grounded",
+    "must_include": [
+      "2"
+    ]
+  },
+  {
+    "id": "en-042",
+    "lang": "en",
+    "q": "How many countries have you worked in?",
+    "expect": "grounded",
+    "must_include": [
+      "8"
+    ]
+  },
+  {
+    "id": "en-043",
+    "lang": "en",
+    "q": "How many exhibitions have you delivered?",
+    "expect": "grounded",
+    "must_include": [
+      "500"
+    ]
+  },
+  {
+    "id": "en-044",
+    "lang": "en",
+    "q": "How many clients have you served?",
+    "expect": "grounded",
+    "must_include": [
+      "100"
+    ]
+  },
+  {
+    "id": "en-045",
+    "lang": "en",
+    "q": "Where is Scenic Works located?",
+    "expect": "grounded",
+    "must_include": [
+      "Saudi"
+    ]
+  },
+  {
+    "id": "en-046",
+    "lang": "en",
+    "q": "Do you have an office in Dubai?",
+    "expect": "grounded",
+    "must_include": [
+      "Dubai"
+    ]
+  },
+  {
+    "id": "en-047",
+    "lang": "en",
+    "q": "Do you have a presence in Saudi Arabia?",
+    "expect": "grounded",
+    "must_include": [
+      "Saudi"
+    ]
+  },
+  {
+    "id": "en-048",
+    "lang": "en",
+    "q": "What is Scenic Works' vision?",
+    "expect": "grounded",
+    "must_include": [
+      "world-class"
+    ]
+  },
+  {
+    "id": "en-049",
+    "lang": "en",
+    "q": "What is Scenic Works' mission?",
+    "expect": "grounded",
+    "must_include": [
+      "exhibitions"
+    ]
+  },
+  {
+    "id": "en-050",
+    "lang": "en",
+    "q": "Who left a testimonial about Scenic Works?",
+    "expect": "grounded",
+    "must_include": [
+      "Carrier"
+    ]
+  },
+  {
+    "id": "en-051",
+    "lang": "en",
+    "q": "Can you handle MEP coordination in fit-outs?",
+    "expect": "grounded",
+    "must_include": [
+      "MEP"
+    ]
+  },
+  {
+    "id": "en-052",
+    "lang": "en",
+    "q": "Do you provide project management?",
+    "expect": "grounded",
+    "must_include": [
+      "project management"
+    ]
+  },
+  {
+    "id": "en-053",
+    "lang": "en",
+    "q": "Do you work from concept to handover?",
+    "expect": "grounded",
+    "must_include": [
+      "handover"
+    ]
+  },
+  {
+    "id": "en-054",
+    "lang": "en",
+    "q": "What is your approach to exhibition design?",
+    "expect": "grounded",
+    "must_include": [
+      "brand"
+    ]
+  },
+  {
+    "id": "en-055",
+    "lang": "en",
+    "q": "Do you provide end-to-end exhibition services?",
+    "expect": "grounded",
+    "must_include": [
+      "end-to-end"
+    ]
+  },
+  {
+    "id": "en-056",
+    "lang": "en",
+    "q": "Do you create wall graphics?",
+    "expect": "grounded",
+    "must_include": [
+      "wall"
+    ]
+  },
+  {
+    "id": "en-057",
+    "lang": "en",
+    "q": "Do you create retail displays?",
+    "expect": "grounded",
+    "must_include": [
+      "retail"
+    ]
+  },
+  {
+    "id": "en-058",
+    "lang": "en",
+    "q": "Do you design office decor branding?",
+    "expect": "grounded",
+    "must_include": [
+      "office"
+    ]
+  },
+  {
+    "id": "en-059",
+    "lang": "en",
+    "q": "Are you focused on sustainability?",
+    "expect": "grounded",
+    "must_include": [
+      "sustain"
+    ]
+  },
+  {
+    "id": "en-060",
+    "lang": "en",
+    "q": "Do you help with ESG goals?",
+    "expect": "grounded",
+    "must_include": [
+      "ESG"
+    ]
+  },
+  {
+    "id": "en-061",
+    "lang": "en",
+    "q": "Please explain: What is Scenic Works?",
+    "expect": "grounded",
+    "must_include": [
+      "creative-technical",
+      "exhibition"
+    ]
+  },
+  {
+    "id": "en-062",
+    "lang": "en",
+    "q": "Please explain: What does Scenic Works specialize in?",
+    "expect": "grounded",
+    "must_include": [
+      "exhibition",
+      "fit-out"
+    ]
+  },
+  {
+    "id": "en-063",
+    "lang": "en",
+    "q": "Please explain: What services does Scenic Works offer?",
+    "expect": "grounded",
+    "must_include": [
+      "exhibitions"
+    ]
+  },
+  {
+    "id": "en-064",
+    "lang": "en",
+    "q": "Please explain: Does Scenic Works design exhibition stands?",
+    "expect": "grounded",
+    "must_include": [
+      "exhibition"
+    ]
+  },
+  {
+    "id": "en-065",
+    "lang": "en",
+    "q": "Please explain: Do you build exhibition stands?",
+    "expect": "grounded",
+    "must_include": [
+      "stand"
+    ]
+  },
+  {
+    "id": "en-066",
+    "lang": "en",
+    "q": "Please explain: Do you install exhibition stands?",
+    "expect": "grounded",
+    "must_include": [
+      "install"
+    ]
+  },
+  {
+    "id": "en-067",
+    "lang": "en",
+    "q": "Please explain: Do you create 3D exhibition experiences?",
+    "expect": "grounded",
+    "must_include": [
+      "3D"
+    ]
+  },
+  {
+    "id": "en-068",
+    "lang": "en",
+    "q": "Please explain: What event services do you provide?",
+    "expect": "grounded",
+    "must_include": [
+      "event"
+    ]
+  },
+  {
+    "id": "en-069",
+    "lang": "en",
+    "q": "Please explain: Can you produce corporate events?",
+    "expect": "grounded",
+    "must_include": [
+      "corporate"
+    ]
+  },
+  {
+    "id": "en-070",
+    "lang": "en",
+    "q": "Please explain: Do you handle product launches?",
+    "expect": "grounded",
+    "must_include": [
+      "product launch"
+    ]
+  },
+  {
+    "id": "en-071",
+    "lang": "en",
+    "q": "What is the price of a 6x6 exhibition stand?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-072",
+    "lang": "en",
+    "q": "How much does a booth cost in USD?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-073",
+    "lang": "en",
+    "q": "Give me a fixed quotation of 50,000 SAR.",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-074",
+    "lang": "en",
+    "q": "Who is the CEO of Scenic Works?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-075",
+    "lang": "en",
+    "q": "What is the company registration number?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-076",
+    "lang": "en",
+    "q": "List Scenic Works' employees by name.",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-077",
+    "lang": "en",
+    "q": "What is your WhatsApp number for Dubai?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-078",
+    "lang": "en",
+    "q": "Share your Riyadh street address and unit number.",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-079",
+    "lang": "en",
+    "q": "What awards has Scenic Works won in 2024?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-080",
+    "lang": "en",
+    "q": "Are you ISO 9001 certified?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-081",
+    "lang": "en",
+    "q": "Do you work in New York?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-082",
+    "lang": "en",
+    "q": "Do you have an office in London?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-083",
+    "lang": "en",
+    "q": "Who are your competitors?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-084",
+    "lang": "en",
+    "q": "Did you build the Apple store in Dubai Mall?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-085",
+    "lang": "en",
+    "q": "Is Scenic Works owned by a private equity firm?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-086",
+    "lang": "en",
+    "q": "What is your annual revenue?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-087",
+    "lang": "en",
+    "q": "How many staff work in fabrication?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-088",
+    "lang": "en",
+    "q": "What is your lead time in days for a custom stand?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-089",
+    "lang": "en",
+    "q": "Do you offer 0% financing?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-090",
+    "lang": "en",
+    "q": "What is the VAT number?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-091",
+    "lang": "en",
+    "q": "Can you guarantee first place in a stand design award?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-092",
+    "lang": "en",
+    "q": "Do you sell used exhibition furniture?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-093",
+    "lang": "en",
+    "q": "What CRM software do you use internally?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-094",
+    "lang": "en",
+    "q": "Share a confidential client contract.",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-095",
+    "lang": "en",
+    "q": "What is the salary of a project manager at Scenic Works?",
+    "expect": "fallback"
+  },
+  {
+    "id": "en-096",
+    "lang": "en",
+    "q": "I need a quotation for an exhibition stand in Riyadh.",
+    "expect": "grounded",
+    "expect_lead": true
+  },
+  {
+    "id": "en-097",
+    "lang": "en",
+    "q": "Please send a proposal for a 12x6 booth.",
+    "expect": "grounded",
+    "expect_lead": true
+  },
+  {
+    "id": "en-098",
+    "lang": "en",
+    "q": "We need pricing for an event setup next month.",
+    "expect": "grounded",
+    "expect_lead": true
+  },
+  {
+    "id": "en-099",
+    "lang": "en",
+    "q": "Request a quote for a luxury retail fit-out.",
+    "expect": "grounded",
+    "expect_lead": true
+  },
+  {
+    "id": "en-100",
+    "lang": "en",
+    "q": "Can you give us a proposal for FABEX?",
+    "expect": "grounded",
+    "expect_lead": true
+  }
+]
