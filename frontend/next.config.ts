@@ -2,7 +2,7 @@ import path from "path";
 import type { NextConfig } from "next";
 
 const onOneDriveWindows =
-  process.platform === "win32" && !process.env.VERCEL;
+  process.platform === "win32" && !process.env.VERCEL && !process.env.RENDER;
 
 const nextConfig: NextConfig = {
   // .next-local is a junction to %LOCALAPPDATA% (see scripts/prepare-next-cache.mjs).

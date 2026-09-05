@@ -6,6 +6,9 @@ import { fileURLToPath } from "url";
 const frontend = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const nextBin = createRequire(import.meta.url).resolve("next/dist/bin/next");
 const args = process.argv.slice(2);
+if (args[0] === "start" && !args.includes("--port") && process.env.PORT) {
+  args.push("--port", String(process.env.PORT));
+}
 
 const child = spawn(process.execPath, [nextBin, ...args], {
   cwd: frontend,

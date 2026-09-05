@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
@@ -77,7 +78,16 @@ class Settings(BaseSettings):
 
     @property
     def origins(self) -> list[str]:
-        return [item.strip() for item in self.allowed_origins.split(",") if item.strip()]
+        items = [item.strip().rstrip("/") for item in self.allowed_origins.split(",") if item.strip()]
+        extras = [
+            (self.frontend_url or "").strip().rstrip("/"),
+            (os.getenv("RENDER_FRONTEND_URL") or "").strip().rstrip("/"),
+        ]
+        seen: list[str] = []
+        for item in items + extras:
+            if item and item not in seen:
+                seen.append(item)
+        return seen
 
 
 @lru_cache

@@ -1,0 +1,15 @@
+# Render Free Tier — no local torch / sentence-transformers.
+# Set EMBEDDING_PROVIDER=huggingface and HF_API_TOKEN.
+fastapi>=0.115.6
+uvicorn[standard]>=0.34.0
+pydantic>=2.10.3
+pydantic-settings>=2.7.0
+email-validator>=2.2.0
+python-dotenv>=1.0.1
+groq>=0.13.1
+supabase>=2.10.0
+httpx>=0.28.1
+langdetect>=1.0.9
+slowapi>=0.1.9
+limits>=3.13.0
+starlette>=0.41.0

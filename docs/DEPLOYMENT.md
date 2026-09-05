@@ -1,5 +1,40 @@
 # Deployment Guide
 
+## Render (client testing URL)
+
+Use **Native Python**, not Docker, unless you set the Dockerfile path yourself.
+
+The failure `open Dockerfile: no such file or directory` happens when Render's root is the GitHub repo root and Environment is Docker. There is now a root `Dockerfile` as a fallback, but **Free Tier should use Python**.
+
+### Service A — API
+
+| Field | Value |
+| --- | --- |
+| Environment | **Python 3** |
+| Root Directory | `backend` |
+| Build Command | `pip install -r requirements-render.txt` |
+| Start Command | `python start.py` |
+| Health Check | `/health` |
+
+### Service B — Widget (the URL you send the client)
+
+| Field | Value |
+| --- | --- |
+| Environment | **Node** |
+| Root Directory | `frontend` |
+| Build Command | `npm ci && npm run build` |
+| Start Command | `npm run start` |
+
+Or connect the repo as a **Blueprint** (`render.yaml`) to create both services.
+
+Required API env vars: `APP_ENV=production`, `EMBEDDING_PROVIDER=huggingface`, `HF_API_TOKEN`, `GROQ_API_KEY`, `ELEVENLABS_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `WIDGET_API_SECRET`, `SESSION_SIGNING_KEY`, `FRONTEND_URL`, `BACKEND_URL`, `ALLOWED_ORIGINS`.
+
+Required web env vars: `BACKEND_URL` (API `onrender.com` URL), `WIDGET_API_SECRET` (same value).
+
+Do not use `EMBEDDING_PROVIDER=local` on the Free tier. Local `bge-m3` + torch will exceed memory.
+
+---
+
 This stack deploys as three services:
 
 | Layer | Platform | Directory |

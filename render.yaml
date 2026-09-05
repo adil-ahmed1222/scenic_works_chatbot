@@ -1,0 +1,61 @@
+# Render Blueprint — Native Python + Next.js (recommended for Free Tier).
+# Dashboard: New → Blueprint → this repo.
+# After first deploy, set FRONTEND_URL and ALLOWED_ORIGINS to the web service URL.
+
+services:
+  - type: web
+    name: scenic-works-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements-render.txt
+    startCommand: python start.py
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: APP_ENV
+        value: production
+      - key: EMBEDDING_PROVIDER
+        value: huggingface
+      - key: SUPABASE_STORAGE_BUCKET
+        value: tts-audio
+      - key: GROQ_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: HF_API_TOKEN
+        sync: false
+      - key: WIDGET_API_SECRET
+        sync: false
+      - key: SESSION_SIGNING_KEY
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: BACKEND_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+
+  - type: web
+    name: scenic-works-web
+    runtime: node
+    plan: free
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: BACKEND_URL
+        sync: false
+      - key: WIDGET_API_SECRET
+        sync: false
+      - key: NEXT_PUBLIC_WIDGET_TITLE
+        value: Scenic Works Assistant
+      - key: NEXT_PUBLIC_BRAND_NAME
+        value: Scenic Works

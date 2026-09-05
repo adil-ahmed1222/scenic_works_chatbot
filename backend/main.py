@@ -33,14 +33,16 @@ async def lifespan(_app: FastAPI):
         if not settings.session_signing_key:
             logger.warning("SESSION_SIGNING_KEY is empty; falling back to the widget secret")
     try:
-        from services.embeddings import get_embedder
+        if settings.embedding_provider == "local":
+            from services.embeddings import get_embedder
+            from services.local_kb import warmup_local_kb
 
-        get_embedder().embed_query("scenic works")
-        logger.info("Embedding model ready")
-        from services.local_kb import warmup_local_kb
-
-        warmup_local_kb()
-        logger.info("Local knowledge index ready")
+            get_embedder().embed_query("scenic works")
+            logger.info("Embedding model ready")
+            warmup_local_kb()
+            logger.info("Local knowledge index ready")
+        else:
+            logger.info("Remote embeddings enabled; skipping local model warmup")
     except Exception:
         logger.exception("Embedding warmup failed; first chat will load the model")
     yield
