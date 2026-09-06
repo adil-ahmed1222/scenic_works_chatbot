@@ -304,57 +304,38 @@ export function ChatWidget({
   const panel = (
     <div
       dir="ltr"
+      data-theme={dark ? "dark" : "light"}
       className={cn(
-        "flex h-full w-full flex-col overflow-hidden rounded-[28px] border shadow-widget",
+        "sw-widget flex h-full w-full flex-col overflow-hidden rounded-widget border shadow-widget",
         dark
-          ? "border-adroit-gold/25 bg-adroit-black text-white"
-          : "border-adroit-gold/30 bg-adroit-cream text-[#0B0B0B]"
+          ? "border-scenic-orange/20 bg-[var(--sw-bg)] text-[var(--sw-fg)]"
+          : "border-scenic-orange/25 bg-[var(--sw-bg)] text-[var(--sw-fg)]"
       )}
     >
       <header
         dir="ltr"
-        className="flex min-h-20 shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-white/5 px-4 py-3 shadow-header backdrop-blur-xl"
+        className="flex min-h-[68px] shrink-0 items-center justify-between gap-3 border-b border-[var(--sw-border)] bg-[var(--sw-header)] px-4 py-3 shadow-header"
       >
-        <div className="flex min-w-0 flex-1 items-center gap-2.5">
-          <ScenicWorksMark className="h-10 w-10 shrink-0" />
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <h1
-                dir={arabic ? "rtl" : "ltr"}
-                className={cn(
-                  "whitespace-nowrap text-[18px] font-bold leading-none tracking-tight",
-                  arabic && "font-arabic"
-                )}
-              >
-                {t.title}
-              </h1>
-              <span className="shrink-0 rounded-full bg-adroit-gold px-2 py-0.5 text-[10px] font-bold tracking-wide text-[#0B0B0B]">
-                {t.badge}
-              </span>
-            </div>
-            <p
-              dir={arabic ? "rtl" : "ltr"}
-              className={cn(
-                "mt-1.5 text-[12px] font-medium leading-snug text-adroit-muted",
-                arabic && "font-arabic"
-              )}
-            >
-              {t.subtitle}
-            </p>
-          </div>
+        <div className="flex min-w-0 flex-1 items-center">
+          <ScenicWorksMark
+            inverted={!dark}
+            className="h-9 w-auto max-w-[min(196px,46vw)] shrink-0 sm:h-10 sm:max-w-[220px]"
+          />
         </div>
-        <div className="flex shrink-0 items-center gap-1">
-          <span className="flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-1 text-[10px] text-emerald-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+        <div className="flex shrink-0 items-center gap-1.5">
+          <span className="hidden items-center gap-1.5 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-2 py-1 text-[10px] font-medium tracking-wide text-emerald-300 sm:flex">
+            <span className="sw-online-dot h-1.5 w-1.5 rounded-full bg-emerald-400" />
             {t.online}
           </span>
-          <div className="flex rounded-full border border-adroit-border bg-black/30 p-0.5 text-[11px] font-semibold">
+          <div className="flex rounded-full border border-[var(--sw-border)] bg-[var(--sw-card)] p-0.5 text-[10px] font-semibold tracking-wide">
             <button
               type="button"
               onClick={() => setLanguage("en")}
               className={cn(
-                "rounded-full px-2 py-1",
-                language === "en" ? "bg-adroit-gold text-[#0B0B0B]" : "text-adroit-muted"
+                "rounded-full px-2 py-1 transition-colors duration-200",
+                language === "en"
+                  ? "bg-scenic-orange text-white"
+                  : "text-[var(--sw-muted)] hover:text-[var(--sw-fg)]"
               )}
             >
               {t.langEn}
@@ -363,8 +344,10 @@ export function ChatWidget({
               type="button"
               onClick={() => setLanguage("ar")}
               className={cn(
-                "rounded-full px-2 py-1",
-                language === "ar" ? "bg-adroit-gold text-[#0B0B0B]" : "text-adroit-muted"
+                "rounded-full px-2 py-1 transition-colors duration-200",
+                language === "ar"
+                  ? "bg-scenic-orange text-white"
+                  : "text-[var(--sw-muted)] hover:text-[var(--sw-fg)]"
               )}
             >
               {t.langAr}
@@ -373,25 +356,25 @@ export function ChatWidget({
           <button
             type="button"
             onClick={() => setDark((value) => !value)}
-            className="rounded-full p-2 hover:bg-white/10"
+            className="sw-icon-btn"
             aria-label="Toggle theme"
           >
-            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {dark ? <Sun className="h-4 w-4" strokeWidth={1.75} /> : <Moon className="h-4 w-4" strokeWidth={1.75} />}
           </button>
           <button
             type="button"
             onClick={closeChat}
-            className="rounded-full p-2 hover:bg-white/10"
+            className="sw-icon-btn"
             aria-label="Close chat"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4" strokeWidth={1.75} />
           </button>
         </div>
       </header>
 
       <div
         ref={scroller}
-        className="adroit-scroll flex-1 space-y-4 overflow-y-auto px-5 py-5"
+        className="adroit-scroll flex-1 space-y-3.5 overflow-y-auto px-4 py-4"
       >
         {messages.length === 0 ? (
           <WelcomeHero
@@ -430,17 +413,17 @@ export function ChatWidget({
       <form
         dir="ltr"
         onSubmit={onSubmit}
-        className="shrink-0 border-t border-adroit-border bg-[#0E0E0E] px-4 py-4"
+        className="shrink-0 border-t border-[var(--sw-border)] bg-[var(--sw-surface)] px-3 py-3 sm:px-4"
       >
-        <div className="flex items-center gap-2">
+        <div className="sw-composer flex items-center gap-1 rounded-full border border-[var(--sw-border)] bg-[var(--sw-card)] p-1.5 shadow-card transition-[border-color,box-shadow] duration-200">
           <button
             type="button"
             onClick={clearChat}
-            className="flex h-[60px] w-[48px] shrink-0 items-center justify-center rounded-full border border-adroit-border text-adroit-muted hover:text-white"
+            className="sw-icon-btn h-10 w-10"
             aria-label={t.clear}
             title={t.clear}
           >
-            <Eraser className="h-4 w-4" />
+            <Eraser className="h-4 w-4" strokeWidth={1.75} />
           </button>
           <input
             dir={arabic ? "rtl" : "ltr"}
@@ -448,7 +431,7 @@ export function ChatWidget({
             onChange={(event) => setInput(event.target.value)}
             placeholder={t.placeholder}
             className={cn(
-              "h-[60px] min-w-0 flex-1 rounded-full border border-adroit-border bg-adroit-card px-5 text-[16px] text-white placeholder:text-adroit-muted focus:border-adroit-gold/50 focus:outline-none focus:ring-2 focus:ring-adroit-gold/40",
+              "h-10 min-w-0 flex-1 bg-transparent px-2 text-[15px] text-[var(--sw-fg)] placeholder:text-[var(--sw-muted)] focus:outline-none",
               arabic ? "text-right font-arabic" : "text-left"
             )}
           />
@@ -457,20 +440,24 @@ export function ChatWidget({
             whileTap={{ scale: 0.96 }}
             onClick={() => void playLastReply()}
             disabled={playingLast}
-            className="flex h-[60px] w-[48px] shrink-0 items-center justify-center rounded-full border border-adroit-gold/30 text-adroit-gold hover:bg-adroit-gold/10"
+            className="sw-icon-btn h-10 w-10 text-scenic-orange hover:text-scenic-orange-bright disabled:opacity-50"
             aria-label={t.voiceLast}
             title={t.voiceLast}
           >
-            {playingLast ? <Volume2 className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+            {playingLast ? (
+              <Volume2 className="h-4 w-4" strokeWidth={1.75} />
+            ) : (
+              <Mic className="h-4 w-4" strokeWidth={1.75} />
+            )}
           </motion.button>
           <Button
             type="submit"
             size="icon"
-            className="h-[60px] w-[60px] rounded-full shadow-gold"
+            className="h-10 w-10 rounded-full shadow-gold"
             disabled={pending}
             aria-label={t.send}
           >
-            <Send className="h-5 w-5" />
+            <Send className="h-4 w-4" strokeWidth={1.75} />
           </Button>
         </div>
       </form>
@@ -489,9 +476,10 @@ export function ChatWidget({
           {open ? (
             <motion.div
               key="scenic-works-panel"
-              initial={{ opacity: 0, y: 18, scale: 0.98 }}
+              initial={{ opacity: 0, y: 16, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 12, scale: 0.98 }}
+              exit={{ opacity: 0, y: 10, scale: 0.98 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
               className="h-[min(700px,calc(100dvh-6.5rem))] w-[min(500px,calc(100vw-1.5rem))] max-md:w-[min(420px,calc(100vw-1.5rem))] max-sm:h-[min(700px,calc(100dvh-6rem))] max-sm:w-[calc(100vw-1rem)]"
             >
               {panel}
@@ -502,11 +490,11 @@ export function ChatWidget({
           <Button
             size="launcher"
             onClick={toggleChat}
-            className="relative bg-gradient-to-br from-adroit-gold to-[#9a7a32] text-[#0B0B0B] shadow-gold"
+            className="relative bg-gradient-to-br from-scenic-orange to-scenic-orange-deep text-white shadow-gold"
             aria-label="Open Scenic Works chat"
           >
             {!open ? (
-              <span className="absolute inset-0 animate-ping rounded-full bg-adroit-gold/30" />
+              <span className="absolute inset-0 animate-ping rounded-full bg-scenic-orange/30" />
             ) : null}
             {open ? (
               <X className="relative h-7 w-7" />

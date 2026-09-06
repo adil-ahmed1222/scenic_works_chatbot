@@ -1,11 +1,32 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Building2, FileText, Phone, Sparkles } from "lucide-react";
+import {
+  Building2,
+  CalendarDays,
+  ChevronRight,
+  FileText,
+  Lightbulb,
+  MessagesSquare,
+  Palette,
+  PanelsTopLeft,
+  Phone,
+  Sparkles,
+} from "lucide-react";
 
 import { copy, type Lang } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
-const icons = [Building2, FileText, Sparkles, Phone];
+const capabilityIcons = [
+  Building2,
+  CalendarDays,
+  PanelsTopLeft,
+  Palette,
+  Lightbulb,
+  MessagesSquare,
+];
+
+const actionIcons = [Building2, FileText, Sparkles, Phone];
 
 export function WelcomeHero({
   language,
@@ -20,60 +41,92 @@ export function WelcomeHero({
   return (
     <div
       dir={arabic ? "rtl" : "ltr"}
-      className={`space-y-6 px-1 pb-2 ${arabic ? "text-right" : "text-left"}`}
+      className={cn("space-y-6 px-0.5 pb-1", arabic ? "text-right" : "text-left")}
     >
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45 }}
-        className="rounded-3xl border border-adroit-border bg-gradient-to-br from-[#16120a] via-adroit-card to-[#0d0d0d] p-6 shadow-header"
+        transition={{ duration: 0.35, ease: "easeOut" }}
       >
-        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-adroit-gold">
-          Scenic Works · Enterprise AI
+        <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-scenic-orange">
+          Engineering Emotion
         </p>
         <h2
-          className={`${arabic ? "font-arabic text-[26px] leading-snug" : "text-[26px] leading-tight"} mt-3 font-bold text-white`}
+          className={cn(
+            "mt-2 text-[22px] font-semibold tracking-tight text-[var(--sw-fg)]",
+            arabic ? "font-arabic leading-snug" : "leading-tight"
+          )}
         >
           {t.welcomeTitle}
         </h2>
-        <p className="mt-3 text-[15px] font-medium text-adroit-muted">
+        <p className="mt-2 text-[14px] leading-relaxed text-[var(--sw-muted)]">
           {t.welcomeBody}
         </p>
-        <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {t.capabilities.map((item) => (
-            <li
-              key={item}
-              className="flex items-center gap-2 text-[15px] text-white/90"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-adroit-gold" />
-              {item}
-            </li>
-          ))}
-        </ul>
       </motion.div>
 
+      <div className="grid grid-cols-2 gap-2">
+        {t.capabilities.map((item, index) => {
+          const Icon = capabilityIcons[index] ?? Sparkles;
+          return (
+            <motion.div
+              key={item}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.04 * index, duration: 0.3 }}
+              className="flex items-center gap-2.5 rounded-card border border-[var(--sw-border)] bg-[var(--sw-card)] px-3 py-2.5"
+            >
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-scenic-orange/10 text-scenic-orange">
+                <Icon className="h-4 w-4" strokeWidth={1.75} />
+              </span>
+              <span
+                className={cn(
+                  "text-[12.5px] font-medium leading-snug text-[var(--sw-fg)]",
+                  arabic && "font-arabic"
+                )}
+              >
+                {item}
+              </span>
+            </motion.div>
+          );
+        })}
+      </div>
+
       <div>
-        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-adroit-muted">
+        <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--sw-muted)]">
           {t.suggested}
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2.5">
           {t.actions.map((action, index) => {
-            const Icon = icons[index] ?? Sparkles;
+            const Icon = actionIcons[index] ?? Sparkles;
             return (
               <motion.button
                 key={action.label}
                 type="button"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.08 * index, duration: 0.35 }}
-                whileHover={{ y: -2, scale: 1.01 }}
+                transition={{ delay: 0.08 + 0.05 * index, duration: 0.3 }}
+                whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onSelect(action.prompt, { openLead: action.openLead })}
-                className="rounded-2xl border border-adroit-border bg-adroit-card p-4 text-start shadow-sm transition-colors hover:border-adroit-gold/50 hover:bg-[#161616]"
+                className="group rounded-card border border-[var(--sw-border)] bg-[var(--sw-card)] p-3.5 text-start transition-colors duration-200 hover:border-scenic-orange/50 hover:bg-[var(--sw-elevated)]"
               >
-                <Icon className="mb-3 h-5 w-5 text-adroit-gold" />
+                <span className="mb-3 flex items-center justify-between">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-scenic-orange/10 text-scenic-orange transition-colors duration-200 group-hover:bg-scenic-orange/16">
+                    <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} />
+                  </span>
+                  <ChevronRight
+                    className={cn(
+                      "h-4 w-4 text-[var(--sw-muted)] transition-all duration-200 group-hover:text-scenic-orange",
+                      arabic && "rotate-180"
+                    )}
+                    strokeWidth={1.75}
+                  />
+                </span>
                 <span
-                  className={`${arabic ? "font-arabic text-[15px]" : "text-[14px]"} block font-semibold text-white`}
+                  className={cn(
+                    "block font-semibold leading-snug text-[var(--sw-fg)]",
+                    arabic ? "font-arabic text-[14px]" : "text-[13px]"
+                  )}
                 >
                   {action.label}
                 </span>

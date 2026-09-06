@@ -1,24 +1,26 @@
-export function ScenicWorksMark({ className = "h-10 w-10" }: { className?: string }) {
+import { cn } from "@/lib/utils";
+
+export function ScenicWorksMark({
+  className = "h-10 w-auto",
+  inverted = false,
+}: {
+  className?: string;
+  inverted?: boolean;
+}) {
   return (
-    <svg
-      viewBox="0 0 40 40"
-      className={className}
-      aria-hidden="true"
-      fill="none"
+    <span
+      className={cn(
+        "inline-flex items-center",
+        inverted && "rounded-md bg-black px-2 py-1"
+      )}
     >
-      <rect width="40" height="40" rx="12" fill="#C8A24A" />
-      <text
-        x="20"
-        y="26.5"
-        textAnchor="middle"
-        fill="#0B0B0B"
-        fontFamily="Inter, system-ui, sans-serif"
-        fontSize="13"
-        fontWeight="800"
-        letterSpacing="-0.4"
-      >
-        SW
-      </text>
-    </svg>
+      {/* Official lockup; black canvas was cropped to a transparent wide mark. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/scenic-works-logo.png"
+        alt="Scenic Works"
+        className={cn("object-contain object-left", className)}
+      />
+    </span>
   );
 }

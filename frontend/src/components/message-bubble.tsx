@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Pause, Play } from "lucide-react";
 import { useRef, useState } from "react";
 
+import { MarkdownContent } from "@/components/markdown-content";
 import { requestVoice, type ChatSource } from "@/lib/api";
 import { copy, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -78,48 +79,48 @@ export function MessageBubble({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.28 }}
+      transition={{ duration: 0.28, ease: "easeOut" }}
       className={cn("flex", isUser ? "justify-end" : "justify-start")}
     >
       <div
         className={cn(
-          "max-w-[85%] whitespace-pre-wrap",
+          "max-w-[85%] px-4 py-3.5",
           isUser
-            ? "rounded-[20px] bg-adroit-gold px-5 py-4 text-[#0B0B0B] shadow-gold"
-            : "rounded-[20px] border border-adroit-border bg-adroit-card p-5 text-white"
+            ? "rounded-bubble rounded-br-md bg-scenic-orange text-white shadow-gold"
+            : "rounded-bubble rounded-bl-md border border-[var(--sw-border)] bg-[var(--sw-card)] text-[var(--sw-fg)]"
         )}
         style={{
-          fontSize: arabic ? 18 : 17,
-          lineHeight: 1.8,
+          fontSize: arabic ? 17 : 15,
+          lineHeight: 1.7,
           fontFamily: arabic
             ? "var(--font-cairo), Tahoma, sans-serif"
             : "var(--font-inter), system-ui, sans-serif",
         }}
       >
-        <p
-          dir={arabic ? "rtl" : "ltr"}
-          className={arabic ? "text-right" : "text-left"}
-        >
-          {message.content}
-        </p>
+        <div dir={arabic ? "rtl" : "ltr"} className={arabic ? "text-right" : "text-left"}>
+          <MarkdownContent
+            content={message.content}
+            className={isUser ? "sw-md-user" : undefined}
+          />
+        </div>
         {!isUser && !message.streaming && message.content ? (
           <motion.button
             type="button"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={listen}
-            className="mt-4 inline-flex items-center gap-2 rounded-full border border-adroit-gold/40 bg-adroit-gold/10 px-4 py-2 text-[13px] font-semibold text-adroit-gold-bright"
+            className="mt-3 inline-flex items-center gap-2 rounded-full border border-scenic-orange/30 bg-scenic-orange/10 px-3.5 py-1.5 text-[12px] font-semibold tracking-wide text-scenic-orange transition-colors duration-200 hover:border-scenic-orange/50 hover:bg-scenic-orange/15"
           >
             {playing ? (
-              <Pause className="h-3.5 w-3.5" />
+              <Pause className="h-3.5 w-3.5" strokeWidth={1.75} />
             ) : (
-              <Play className="h-3.5 w-3.5 fill-current" />
+              <Play className="h-3.5 w-3.5 fill-current" strokeWidth={1.75} />
             )}
             {playing ? t.listening : t.listen}
           </motion.button>
         ) : null}
         {voiceError && !isUser ? (
-          <p className="mt-2 text-[12px] text-red-400">{t.voiceError}</p>
+          <p className="mt-2 text-[12px] leading-relaxed text-red-400">{t.voiceError}</p>
         ) : null}
       </div>
     </motion.div>
@@ -138,12 +139,12 @@ export function ThinkingIndicator({ language }: { language: Lang }) {
     >
       <div
         dir={arabic ? "rtl" : "ltr"}
-        className="flex items-center gap-3 rounded-[20px] border border-adroit-border bg-adroit-card px-5 py-4"
+        className="flex items-center gap-3 rounded-bubble rounded-bl-md border border-[var(--sw-border)] bg-[var(--sw-card)] px-4 py-3.5"
       >
         <span className="sw-buffer shrink-0" aria-hidden="true" />
         <p
           className={cn(
-            "text-[14px] font-medium text-adroit-gold-bright",
+            "text-[13px] font-medium tracking-wide text-scenic-orange",
             arabic ? "font-arabic text-right" : "text-left"
           )}
         >

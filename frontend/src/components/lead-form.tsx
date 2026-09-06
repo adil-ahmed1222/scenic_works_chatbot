@@ -61,7 +61,7 @@ export function LeadForm({
     return (
       <div
         dir={textDir}
-        className={`rounded-2xl border border-adroit-gold/30 bg-adroit-gold/10 p-5 text-[15px] leading-relaxed text-white ${arabic ? "text-right" : "text-left"}`}
+        className={`rounded-card border border-scenic-orange/25 bg-scenic-orange/10 p-5 text-[14px] leading-relaxed text-[var(--sw-fg)] ${arabic ? "text-right" : "text-left"}`}
       >
         {t.thanks}
       </div>
@@ -72,17 +72,17 @@ export function LeadForm({
     <form
       dir="ltr"
       onSubmit={onSubmit}
-      className="relative space-y-3 rounded-2xl border border-adroit-border bg-adroit-card p-5"
+      className="relative space-y-3 rounded-card border border-[var(--sw-border)] bg-[var(--sw-card)] p-5 shadow-card"
     >
       <p
         dir={textDir}
-        className={`text-[16px] font-semibold text-adroit-gold ${arabic ? "text-right" : "text-left"}`}
+        className={`text-[15px] font-semibold tracking-tight text-scenic-orange ${arabic ? "text-right" : "text-left"}`}
       >
         {t.leadTitle}
       </p>
       <p
         dir={textDir}
-        className={`text-[13px] text-adroit-muted ${arabic ? "text-right" : "text-left"}`}
+        className={`text-[13px] leading-relaxed text-[var(--sw-muted)] ${arabic ? "text-right" : "text-left"}`}
       >
         {hint || t.leadHint}
       </p>

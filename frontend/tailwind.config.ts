@@ -6,22 +6,38 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        scenic: {
+          orange: "#FF7A00",
+          "orange-bright": "#FF9533",
+          "orange-deep": "#E56A00",
+          black: "#0A0A0A",
+          charcoal: "#121212",
+        },
         adroit: {
-          black: "#0B0B0B",
-          card: "#111111",
-          border: "#232323",
-          gold: "#C8A24A",
-          "gold-bright": "#F4E2A1",
-          cream: "#F7F3E8",
-          muted: "#A0A0A0",
+          black: "#0A0A0A",
+          charcoal: "#121212",
+          card: "#121212",
+          elevated: "#1A1A1A",
+          border: "#2A2A2A",
+          gold: "#FF7A00",
+          "gold-bright": "#FF9533",
+          "gold-deep": "#E56A00",
+          cream: "#F6F1E8",
+          muted: "#9A9A9A",
           white: "#FFFFFF",
         },
       },
+      borderRadius: {
+        widget: "24px",
+        card: "14px",
+        bubble: "18px",
+      },
       boxShadow: {
         widget:
-          "0 24px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(200,162,74,0.18)",
-        gold: "0 10px 30px rgba(200,162,74,0.28)",
-        header: "0 12px 40px rgba(0,0,0,0.35)",
+          "0 28px 80px rgba(0,0,0,0.58), 0 0 0 1px rgba(255,122,0,0.14)",
+        gold: "0 8px 24px rgba(255,122,0,0.28)",
+        header: "0 1px 0 rgba(255,255,255,0.04)",
+        card: "0 10px 28px rgba(0,0,0,0.22)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
