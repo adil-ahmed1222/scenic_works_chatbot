@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import re
 import time
 from collections.abc import Iterator
 from concurrent.futures import ThreadPoolExecutor
@@ -25,6 +26,23 @@ from services.supabase_client import get_supabase, mark_remote_down, remote_enab
 
 logger = logging.getLogger("scenicworks.rag")
 
+_GREETING_RE = re.compile(
+    r"^(hi|hello|hey|hiya|hola|salam|salaam|good\s+(morning|afternoon|evening)"
+    r"|مرحبا|اهلا|أهلا|هلا|السلام\s+عليكم)[\s!.]*$",
+    re.IGNORECASE,
+)
+_COMPANY_OVERVIEW_QUERY = (
+    "Scenic Works company overview who we are services "
+    "exhibitions events fit-outs branding locations"
+)
+
+
+def _search_query(query: str) -> str:
+    text = (query or "").strip()
+    if _GREETING_RE.match(text):
+        return _COMPANY_OVERVIEW_QUERY
+    return text
+
 
 def _is_unreachable(exc: Exception) -> bool:
     text = str(exc).lower()
@@ -47,8 +65,9 @@ def retrieve(
 ) -> list[dict[str, Any]]:
     settings = get_settings()
     started = time.perf_counter()
+    lookup = _search_query(query)
     if not remote_enabled():
-        rows = retrieve_local(query, top_k)
+        rows = retrieve_local(lookup, top_k)
         logger.info(
             "perf stage=rag_local_ms value=%.1f chunks=%s",
             (time.perf_counter() - started) * 1000,
@@ -56,7 +75,7 @@ def retrieve(
         )
         return rows
 
-    vector = get_embedder().embed_query(query)
+    vector = get_embedder().embed_query(lookup)
     try:
         client = get_supabase()
         result = client.rpc(
@@ -74,19 +93,21 @@ def retrieve(
             (time.perf_counter() - started) * 1000,
             len(rows),
         )
-        return rows
+        if rows:
+            return rows
+        logger.warning("Supabase returned 0 chunks; using local knowledge base")
     except Exception as exc:  # noqa: BLE001
         logger.warning("Supabase retrieval failed: %s", exc)
         if _is_unreachable(exc):
             mark_remote_down(str(exc))
         get_supabase.cache_clear()
-        rows = retrieve_local(query, top_k, query_vector=vector)
-        logger.info(
-            "perf stage=rag_fallback_ms value=%.1f chunks=%s",
-            (time.perf_counter() - started) * 1000,
-            len(rows),
-        )
-        return rows
+    rows = retrieve_local(lookup, top_k, query_vector=vector)
+    logger.info(
+        "perf stage=rag_fallback_ms value=%.1f chunks=%s",
+        (time.perf_counter() - started) * 1000,
+        len(rows),
+    )
+    return rows
 
 
 def _format_context(chunks: list[dict[str, Any]]) -> str:
