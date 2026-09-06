@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Pause, Play } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { requestVoice, type ChatSource } from "@/lib/api";
 import { copy, type Lang } from "@/lib/i18n";
@@ -33,8 +33,18 @@ export function MessageBubble({
   const arabic = (message.language || language) === "ar";
   const [playing, setPlaying] = useState(false);
   const [voiceError, setVoiceError] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const requestLock = useRef(false);
 
   async function listen() {
+    if (playing) {
+      audioRef.current?.pause();
+      audioRef.current = null;
+      setPlaying(false);
+      return;
+    }
+    if (requestLock.current) return;
+    requestLock.current = true;
     try {
       setVoiceError(false);
       setPlaying(true);
@@ -45,15 +55,22 @@ export function MessageBubble({
         session_token: sessionToken,
       });
       const audio = new Audio(result.audio_url);
-      audio.onended = () => setPlaying(false);
+      audioRef.current = audio;
+      audio.onended = () => {
+        setPlaying(false);
+        audioRef.current = null;
+      };
       audio.onerror = () => {
         setPlaying(false);
         setVoiceError(true);
+        audioRef.current = null;
       };
       await audio.play();
     } catch {
       setPlaying(false);
       setVoiceError(true);
+    } finally {
+      requestLock.current = false;
     }
   }
 

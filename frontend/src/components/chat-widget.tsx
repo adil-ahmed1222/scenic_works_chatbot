@@ -215,6 +215,9 @@ export function ChatWidget({
             if (event.show_lead_form) {
               setShowLead(true);
               setLeadHint(event.lead_prompt || null);
+            } else {
+              setShowLead(false);
+              setLeadHint(null);
             }
             return;
           }

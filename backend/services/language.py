@@ -51,5 +51,24 @@ def is_knowledge_fallback(text: str) -> bool:
     )
 
 
+CLOSING_RE = re.compile(
+    r"^(ok|okay|alright|sure|yes)?[\s,.-]*"
+    r"(thanks|thank you|thx|ty|cheers|appreciate it|"
+    r"شكرا(?:ً| لك)?|شكرًا(?: لك)?|مشكور)"
+    r"[\s!.]*$",
+    re.IGNORECASE,
+)
+
+
+def is_closing_message(text: str) -> bool:
+    return bool(CLOSING_RE.match((text or "").strip()))
+
+
+def thanks_message(language: str) -> str:
+    if language == "ar":
+        return "على الرحب والسعة. يسعد فريق سينيك ووركس بمساعدتك في أي وقت."
+    return "You're welcome. Scenic Works is here if you need anything else."
+
+
 def is_rtl(language: str) -> bool:
     return language == "ar"

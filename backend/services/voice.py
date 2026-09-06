@@ -5,7 +5,6 @@ from __future__ import annotations
 import base64
 import logging
 import uuid
-from pathlib import Path
 
 import httpx
 from config import get_settings
@@ -14,7 +13,6 @@ from services.supabase_client import get_supabase
 
 logger = logging.getLogger("scenicworks.voice")
 
-AUDIO_DIR = Path(__file__).resolve().parents[1] / "static" / "audio"
 ELEVEN_URL = "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
 
 
@@ -98,21 +96,7 @@ def _upload_supabase(audio: bytes, filename: str) -> str | None:
 def create_audio_url(text: str, language: str = "en") -> tuple[str, str]:
     audio, voice_id = synthesize(text, language)
     filename = f"{uuid.uuid4().hex}.mp3"
-    remote = _upload_supabase(audio, filename)
-    if remote:
-        return remote, voice_id
-
-    settings = get_settings()
-    if settings.app_env != "production":
-        AUDIO_DIR.mkdir(parents=True, exist_ok=True)
-        path = AUDIO_DIR / filename
-        path.write_bytes(audio)
-        local = f"{settings.backend_url.rstrip('/')}/static/audio/{filename}"
-        if "localhost" in local or "127.0.0.1" in local:
-            encoded = base64.b64encode(audio).decode("ascii")
-            return f"data:audio/mpeg;base64,{encoded}", voice_id
-        return local, voice_id
-
+    _upload_supabase(audio, filename)
     encoded = base64.b64encode(audio).decode("ascii")
-    logger.info("Serving voice as data URL (%s bytes)", len(audio))
+    logger.info("Serving voice as data URL (%s bytes) voice=%s", len(audio), voice_id)
     return f"data:audio/mpeg;base64,{encoded}", voice_id

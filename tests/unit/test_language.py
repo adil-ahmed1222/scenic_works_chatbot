@@ -9,8 +9,10 @@ sys.path.insert(0, str(ROOT / "backend"))
 from services.language import (  # noqa: E402
     detect_language,
     fallback_message,
+    is_closing_message,
     is_knowledge_fallback,
     service_error_message,
+    thanks_message,
 )
 
 
@@ -27,3 +29,11 @@ def test_fallback_messages() -> None:
     assert "قاعدة معرفة" in fallback_message("ar")
     assert is_knowledge_fallback(fallback_message("en"))
     assert "starting up" in service_error_message("en").lower()
+
+
+def test_closing_messages() -> None:
+    assert is_closing_message("ok thank you")
+    assert is_closing_message("Thank you!")
+    assert is_closing_message("شكرا")
+    assert not is_closing_message("What services do you offer?")
+    assert "welcome" in thanks_message("en").lower()

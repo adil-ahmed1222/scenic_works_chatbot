@@ -15,8 +15,10 @@ from services.groq_client import complete_stream
 from services.language import (
     detect_language,
     fallback_message,
+    is_closing_message,
     is_knowledge_fallback,
     service_error_message,
+    thanks_message,
 )
 from services.leads import detect_buying_intent, detect_contact_intent
 from services.local_kb import retrieve_lexical, retrieve_local
@@ -165,9 +167,29 @@ def stream_answer(
     language = language_hint or detect_language(message)
     language_name = LANGUAGE_NAMES.get(language, "English")
     contact_intent = detect_contact_intent(message)
-    show_lead = detect_buying_intent(message, language) or contact_intent
+    closing = is_closing_message(message)
+    show_lead = (detect_buying_intent(message, language) or contact_intent) and not closing
     lead_prompt = LEAD_PROMPT_AR if language == "ar" else LEAD_PROMPT_EN
     perf("session_ms")
+
+    if closing:
+        answer = thanks_message(language)
+        _persist(session, message, answer, language)
+        yield {
+            "type": "meta",
+            "session_id": session,
+            "session_token": token,
+            "language": language,
+            "sources": [],
+        }
+        yield {"type": "token", "text": answer}
+        yield {
+            "type": "done",
+            "answer": answer,
+            "show_lead_form": False,
+            "lead_prompt": None,
+        }
+        return
 
     history: list[dict[str, Any]] = []
     chunks: list[dict[str, Any]] = []
@@ -280,9 +302,6 @@ def stream_answer(
 
     if is_knowledge_fallback(answer) and chunks:
         logger.warning("Model returned knowledge fallback despite %s retrieved chunks", len(chunks))
-
-    if detect_buying_intent(f"{message}\n{answer}", language):
-        show_lead = True
 
     _persist(session, message, answer, language)
     perf("total_ms")
