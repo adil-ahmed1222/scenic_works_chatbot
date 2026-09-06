@@ -150,7 +150,7 @@ export function ChatWidget({
     setPending(true);
     const assistantId = crypto.randomUUID();
     let started = false;
-    const timeout = window.setTimeout(() => controller.abort(), 60_000);
+    const timeout = window.setTimeout(() => controller.abort(), 120_000);
     try {
       await streamChat(
         {

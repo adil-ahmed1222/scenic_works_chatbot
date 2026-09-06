@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import logging
+import math
 import os
+import time
 from functools import lru_cache
 from typing import Sequence
 
@@ -107,12 +109,14 @@ class EmbeddingService:
     def embed_query(self, text: str) -> list[float]:
         return self.embed_texts([text])[0]
 
+    def _use_remote_api(self) -> bool:
+        return self.settings.embedding_provider == "huggingface" or bool(
+            os.getenv("RENDER") or os.getenv("RENDER_SERVICE_ID")
+        )
+
     def embed_texts(self, texts: Sequence[str]) -> list[list[float]]:
-        if self.settings.embedding_provider == "huggingface" and self.settings.hf_api_token:
-            try:
-                return self._embed_hf(texts)
-            except Exception as extra:  # noqa: BLE001
-                logger.warning("Hugging Face embedding API failed (%s); using local MiniLM", extra)
+        if self._use_remote_api():
+            return self._embed_hf(texts)
         try:
             self._load_local()
         except RuntimeError as extra:
@@ -135,26 +139,76 @@ class EmbeddingService:
         )
         return [v.tolist() for v in vectors]
 
+    def _hf_endpoints(self) -> list[str]:
+        if self.settings.hf_embedding_endpoint:
+            return [self.settings.hf_embedding_endpoint]
+        model = self.model_name
+        return [
+            f"https://router.huggingface.co/hf-inference/models/{model}/pipeline/feature-extraction",
+            f"https://api-inference.huggingface.co/pipeline/feature-extraction/{model}",
+            f"https://api-inference.huggingface.co/models/{model}",
+        ]
+
     def _embed_hf(self, texts: Sequence[str]) -> list[list[float]]:
-        token = self.settings.hf_api_token
-        if not token:
-            raise RuntimeError("HF_API_TOKEN is required when EMBEDDING_PROVIDER=huggingface")
-        endpoint = self.settings.hf_embedding_endpoint or (
-            f"https://api-inference.huggingface.co/models/{self.model_name}"
-        )
-        response = httpx.post(
-            endpoint,
-            headers={"Authorization": f"Bearer {token}"},
-            json={"inputs": list(texts)},
-            timeout=60,
-        )
-        response.raise_for_status()
-        data = response.json()
-        if isinstance(data, list) and data and isinstance(data[0], float):
-            return [data]
-        if isinstance(data, list):
+        token = (self.settings.hf_api_token or "").strip()
+        headers = {"Content-Type": "application/json"}
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+        last_error: Exception | None = None
+        for endpoint in self._hf_endpoints():
+            for attempt in range(4):
+                try:
+                    response = httpx.post(
+                        endpoint,
+                        headers=headers,
+                        json={"inputs": list(texts), "options": {"wait_for_model": True}},
+                        timeout=30,
+                    )
+                    if response.status_code in {502, 503, 504}:
+                        time.sleep(1.5 * (attempt + 1))
+                        continue
+                    response.raise_for_status()
+                    vectors = _coerce_vectors(response.json(), len(texts))
+                    logger.info("Embedded %s texts via Hugging Face API", len(vectors))
+                    return [_normalize(vector) for vector in vectors]
+                except Exception as extra:  # noqa: BLE001
+                    last_error = extra
+                    logger.warning("HF embedding endpoint %s failed: %s", endpoint, extra)
+                    break
+        raise RuntimeError(
+            "Hugging Face embedding API failed. Set HF_API_TOKEN on Render "
+            "and do not use EMBEDDING_PROVIDER=local on the Free tier."
+        ) from last_error
+
+
+def _normalize(vector: list[float]) -> list[float]:
+    norm = math.sqrt(sum(value * value for value in vector)) or 1.0
+    return [value / norm for value in vector]
+
+
+def _mean_pool(tokens: list[list[float]]) -> list[float]:
+    width = len(tokens[0])
+    totals = [0.0] * width
+    for token in tokens:
+        for index, value in enumerate(token):
+            totals[index] += float(value)
+    count = float(len(tokens))
+    return [value / count for value in totals]
+
+
+def _coerce_vectors(data: object, expected: int) -> list[list[float]]:
+    if isinstance(data, dict) and data.get("error"):
+        raise RuntimeError(str(data.get("error")))
+    if isinstance(data, list) and data and isinstance(data[0], float):
+        return [data]
+    if isinstance(data, list) and data and isinstance(data[0], list):
+        if data[0] and isinstance(data[0][0], float):
+            if expected == 1 and len(data) != 1 and all(isinstance(row[0], float) for row in data):
+                return [_mean_pool(data)]  # type: ignore[arg-type]
             return data
-        raise RuntimeError("Unexpected Hugging Face embedding response")
+        if data[0] and isinstance(data[0][0], list):
+            return [_mean_pool(row) for row in data]  # type: ignore[arg-type]
+    raise RuntimeError(f"Unexpected Hugging Face embedding response: {type(data)}")
 
 
 @lru_cache

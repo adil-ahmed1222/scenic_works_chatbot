@@ -5,7 +5,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import field_validator, model_validator
+from pydantic import AliasChoices, Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _BACKEND_DIR = Path(__file__).resolve().parent
@@ -17,6 +17,7 @@ class Settings(BaseSettings):
         env_file=(_BACKEND_DIR / ".env", _ROOT / ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
+        populate_by_name=True,
     )
 
     app_env: str = "development"
@@ -48,7 +49,12 @@ class Settings(BaseSettings):
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     embedding_dim: int = 384
     embedding_provider: Literal["local", "huggingface"] = "local"
-    hf_api_token: str = ""
+    hf_api_token: str = Field(
+        default="",
+        validation_alias=AliasChoices(
+            "HF_API_TOKEN", "HF_TOKEN", "HUGGINGFACEHUB_API_TOKEN"
+        ),
+    )
     hf_embedding_endpoint: str = ""
 
     rag_top_k: int = 5
@@ -85,6 +91,14 @@ class Settings(BaseSettings):
             self.embedding_dim = 384
         elif "minilm" in lowered:
             self.embedding_dim = 384
+        if os.getenv("RENDER") or os.getenv("RENDER_SERVICE_ID"):
+            self.embedding_provider = "huggingface"
+        if not self.hf_api_token:
+            self.hf_api_token = (
+                os.getenv("HF_TOKEN")
+                or os.getenv("HUGGINGFACEHUB_API_TOKEN")
+                or ""
+            ).strip()
         return self
 
     @property

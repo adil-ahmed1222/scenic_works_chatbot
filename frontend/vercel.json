@@ -1,4 +1,15 @@
 {
   "framework": "nextjs",
-  "buildCommand": "next build"
+  "buildCommand": "next build",
+  "functions": {
+    "src/app/api/chat/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/voice/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/lead/route.ts": {
+      "maxDuration": 60
+    }
+  }
 }
