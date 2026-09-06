@@ -6,12 +6,12 @@ import {
   CalendarDays,
   ChevronRight,
   FileText,
-  Lightbulb,
   MessagesSquare,
   Palette,
   PanelsTopLeft,
   Phone,
   Sparkles,
+  Zap,
 } from "lucide-react";
 
 import { copy, type Lang } from "@/lib/i18n";
@@ -22,7 +22,7 @@ const capabilityIcons = [
   CalendarDays,
   PanelsTopLeft,
   Palette,
-  Lightbulb,
+  Zap,
   MessagesSquare,
 ];
 

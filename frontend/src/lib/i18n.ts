@@ -29,7 +29,7 @@ export const copy = {
       "Event Production",
       "Interior Fit-Outs",
       "Branding",
-      "AV & Lighting",
+      "Activations",
       "Project Consultations",
     ],
     actions: [
@@ -71,7 +71,7 @@ export const copy = {
       "إنتاج الفعاليات",
       "التشطيب الداخلي",
       "الهوية البصرية",
-      "الصوت والإضاءة",
+      "التفعيلات",
       "استشارات المشاريع",
     ],
     actions: [
