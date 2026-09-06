@@ -151,6 +151,20 @@ class EmbeddingService:
 
     def _embed_hf(self, texts: Sequence[str]) -> list[list[float]]:
         token = (self.settings.hf_api_token or "").strip()
+        try:
+            from huggingface_hub import InferenceClient
+
+            client = InferenceClient(api_key=token or None)
+            raw = client.feature_extraction(
+                list(texts),
+                model=self.model_name,
+                normalize=True,
+            )
+            vectors = _coerce_vectors(raw, len(texts))
+            logger.info("Embedded %s texts via Hugging Face InferenceClient", len(vectors))
+            return [_normalize(vector) for vector in vectors]
+        except Exception as extra:  # noqa: BLE001
+            logger.warning("Hugging Face InferenceClient failed: %s", extra)
         headers = {"Content-Type": "application/json"}
         if token:
             headers["Authorization"] = f"Bearer {token}"
@@ -197,6 +211,8 @@ def _mean_pool(tokens: list[list[float]]) -> list[float]:
 
 
 def _coerce_vectors(data: object, expected: int) -> list[list[float]]:
+    if hasattr(data, "tolist"):
+        data = data.tolist()
     if isinstance(data, dict) and data.get("error"):
         raise RuntimeError(str(data.get("error")))
     if isinstance(data, list) and data and isinstance(data[0], float):

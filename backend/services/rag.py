@@ -19,7 +19,7 @@ from services.language import (
     service_error_message,
 )
 from services.leads import detect_buying_intent
-from services.local_kb import retrieve_local
+from services.local_kb import retrieve_lexical, retrieve_local
 from services.memory import append_message, as_openai_messages, fetch_history
 from services.sessions import resolve_session
 from services.supabase_client import get_supabase, mark_remote_down, remote_enabled
@@ -66,47 +66,47 @@ def retrieve(
     settings = get_settings()
     started = time.perf_counter()
     lookup = _search_query(query)
-    if not remote_enabled():
-        rows = retrieve_local(lookup, top_k)
-        logger.info(
-            "perf stage=rag_local_ms value=%.1f chunks=%s",
-            (time.perf_counter() - started) * 1000,
-            len(rows),
-        )
-        return rows
+    limit = top_k or settings.rag_top_k
 
-    vector = get_embedder().embed_query(lookup)
-    try:
-        client = get_supabase()
-        result = client.rpc(
-            "match_documents",
-            {
-                "query_embedding": vector,
-                "match_count": top_k or settings.rag_top_k,
-                "filter_language": None,
-                "min_similarity": settings.rag_min_similarity,
-            },
-        ).execute()
-        rows = result.data or []
-        logger.info(
-            "perf stage=rag_remote_ms value=%.1f chunks=%s",
-            (time.perf_counter() - started) * 1000,
-            len(rows),
-        )
-        if rows:
-            return rows
-        logger.warning("Supabase returned 0 chunks; using local knowledge base")
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("Supabase retrieval failed: %s", exc)
-        if _is_unreachable(exc):
-            mark_remote_down(str(exc))
-        get_supabase.cache_clear()
-    rows = retrieve_local(lookup, top_k, query_vector=vector)
+    if remote_enabled():
+        try:
+            vector = get_embedder().embed_query(lookup)
+            result = get_supabase().rpc(
+                "match_documents",
+                {
+                    "query_embedding": vector,
+                    "match_count": limit,
+                    "filter_language": None,
+                    "min_similarity": settings.rag_min_similarity,
+                },
+            ).execute()
+            rows = result.data or []
+            logger.info(
+                "perf stage=rag_remote_ms value=%.1f chunks=%s",
+                (time.perf_counter() - started) * 1000,
+                len(rows),
+            )
+            if rows:
+                return rows
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Vector retrieval failed: %s", exc)
+            if _is_unreachable(exc):
+                mark_remote_down(str(exc))
+            get_supabase.cache_clear()
+
+    rows = retrieve_lexical(lookup, limit)
     logger.info(
-        "perf stage=rag_fallback_ms value=%.1f chunks=%s",
+        "perf stage=rag_lexical_ms value=%.1f chunks=%s",
         (time.perf_counter() - started) * 1000,
         len(rows),
     )
+    if rows:
+        return rows
+    try:
+        rows = retrieve_local(lookup, limit)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Local vector fallback failed: %s", exc)
+        rows = []
     return rows
 
 

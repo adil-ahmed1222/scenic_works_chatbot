@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -17,6 +18,34 @@ CHUNKS_FILE = (
     Path(__file__).resolve().parents[2] / "knowledge-base" / "chunks" / "chunks.json"
 )
 VECTOR_FILE = CHUNKS_FILE.with_name("vectors.json")
+_TOKEN_RE = re.compile(r"[\w\u0600-\u06FF]+", re.UNICODE)
+_STOP = {
+    "the",
+    "a",
+    "an",
+    "and",
+    "or",
+    "to",
+    "of",
+    "for",
+    "in",
+    "on",
+    "with",
+    "is",
+    "are",
+    "do",
+    "does",
+    "i",
+    "need",
+    "want",
+    "please",
+    "what",
+    "how",
+    "can",
+    "you",
+    "your",
+    "me",
+}
 
 
 def cosine_similarity(left: list[float], right: list[float]) -> float:
@@ -112,6 +141,69 @@ def _load_index() -> tuple[list[dict[str, Any]], list[list[float]]]:
 def warmup_local_kb() -> None:
     """Optional manual preload. Startup must not call this on 512MB hosts."""
     _load_index()
+
+
+def _tokens(text: str) -> set[str]:
+    return {
+        token.lower()
+        for token in _TOKEN_RE.findall(text or "")
+        if len(token) > 2 and token.lower() not in _STOP
+    }
+
+
+def rank_lexical(
+    query: str,
+    items: list[dict[str, Any]],
+    *,
+    top_k: int,
+) -> list[dict[str, Any]]:
+    needles = _tokens(query)
+    if not needles:
+        needles = {token.lower() for token in _TOKEN_RE.findall(query or "")}
+    scored: list[tuple[float, dict[str, Any]]] = []
+    for item in items:
+        blob = f"{item.get('title') or ''} {item.get('content') or ''}".lower()
+        if not blob.strip():
+            continue
+        hits = sum(1 for token in needles if token in blob)
+        score = hits / max(len(needles), 1)
+        if score > 0:
+            scored.append((score, item))
+    scored.sort(key=lambda pair: pair[0], reverse=True)
+    if not scored and items:
+        return [{**item, "similarity": 0.2} for item in items[:top_k]]
+    return [{**item, "similarity": score} for score, item in scored[:top_k]]
+
+
+def retrieve_lexical(query: str, top_k: int | None = None) -> list[dict[str, Any]]:
+    settings = get_settings()
+    limit = top_k or settings.rag_top_k
+    try:
+        from services.supabase_client import get_supabase, remote_enabled
+
+        if remote_enabled():
+            rows = (
+                get_supabase()
+                .table("documents")
+                .select("id,content,source_url,title,language,category")
+                .execute()
+                .data
+                or []
+            )
+            ranked = rank_lexical(query, rows, top_k=limit)
+            if ranked:
+                logger.info("Lexical remote retrieval returned %s chunks", len(ranked))
+                return ranked
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Lexical remote retrieval failed: %s", exc)
+    try:
+        items, _, _ = _parse_chunks()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Lexical local retrieval failed: %s", exc)
+        return []
+    ranked = rank_lexical(query, items, top_k=limit)
+    logger.info("Lexical local retrieval returned %s chunks", len(ranked))
+    return ranked
 
 
 def retrieve_local(
