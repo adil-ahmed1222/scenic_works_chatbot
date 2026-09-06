@@ -136,9 +136,12 @@ export function ThinkingIndicator({ language }: { language: Lang }) {
       animate={{ opacity: 1, y: 0 }}
       className="flex justify-start"
     >
-      <div className="rounded-[20px] border border-adroit-border bg-adroit-card px-5 py-4">
+      <div
+        dir={arabic ? "rtl" : "ltr"}
+        className="flex items-center gap-3 rounded-[20px] border border-adroit-border bg-adroit-card px-5 py-4"
+      >
+        <span className="sw-buffer shrink-0" aria-hidden="true" />
         <p
-          dir={arabic ? "rtl" : "ltr"}
           className={cn(
             "text-[14px] font-medium text-adroit-gold-bright",
             arabic ? "font-arabic text-right" : "text-left"
@@ -146,11 +149,6 @@ export function ThinkingIndicator({ language }: { language: Lang }) {
         >
           {t.thinking}
         </p>
-        <div className="mt-3 flex gap-1.5">
-          <span className="typing-dot h-2 w-2 rounded-full bg-adroit-gold animate-bounce-dot" />
-          <span className="typing-dot h-2 w-2 rounded-full bg-adroit-gold animate-bounce-dot" />
-          <span className="typing-dot h-2 w-2 rounded-full bg-adroit-gold animate-bounce-dot" />
-        </div>
       </div>
     </motion.div>
   );

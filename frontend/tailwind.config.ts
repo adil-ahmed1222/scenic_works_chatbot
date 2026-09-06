@@ -28,17 +28,12 @@ const config: Config = {
         arabic: ["var(--font-cairo)", "Tahoma", "sans-serif"],
       },
       keyframes: {
-        bounceDot: {
-          "0%, 80%, 100%": { transform: "translateY(0)", opacity: "0.35" },
-          "40%": { transform: "translateY(-5px)", opacity: "1" },
-        },
         shimmer: {
           "0%": { backgroundPosition: "0% 50%" },
           "100%": { backgroundPosition: "100% 50%" },
         },
       },
       animation: {
-        "bounce-dot": "bounceDot 1.1s infinite",
         shimmer: "shimmer 2.4s linear infinite",
       },
     },
