@@ -16,34 +16,49 @@ export async function proxyBackend(path: string, request: Request) {
   }
   const forwarded = request.headers.get("x-forwarded-for");
   const realIp = request.headers.get("x-real-ip");
-  const response = await fetch(`${backendUrl()}${path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: request.headers.get("accept") || "application/json",
-      ...(secret ? { "X-Widget-Key": secret } : {}),
-      ...(forwarded ? { "X-Forwarded-For": forwarded } : {}),
-      ...(realIp ? { "X-Real-IP": realIp } : {}),
-    },
-    body,
-    cache: "no-store",
-  });
-  const contentType = response.headers.get("content-type") || "application/json";
-  if (contentType.includes("text/event-stream") && response.body) {
-    return new NextResponse(response.body, {
+  const requestId = request.headers.get("x-request-id") || crypto.randomUUID();
+  const timeoutMs = path === "/chat" ? 110_000 : 45_000;
+  try {
+    const response = await fetch(`${backendUrl()}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: request.headers.get("accept") || "application/json",
+        "X-Request-Id": requestId,
+        ...(secret ? { "X-Widget-Key": secret } : {}),
+        ...(forwarded ? { "X-Forwarded-For": forwarded } : {}),
+        ...(realIp ? { "X-Real-IP": realIp } : {}),
+      },
+      body,
+      cache: "no-store",
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    const contentType = response.headers.get("content-type") || "application/json";
+    if (contentType.includes("text/event-stream") && response.body) {
+      return new NextResponse(response.body, {
+        status: response.status,
+        headers: {
+          "Content-Type": contentType,
+          "Cache-Control": "no-store, no-transform",
+          "X-Accel-Buffering": "no",
+          "X-Request-Id": requestId,
+        },
+      });
+    }
+    const text = await response.text();
+    return new NextResponse(text, {
       status: response.status,
       headers: {
         "Content-Type": contentType,
-        "Cache-Control": "no-store, no-transform",
-        "X-Accel-Buffering": "no",
+        "X-Request-Id": requestId,
       },
     });
+  } catch (error) {
+    const detail =
+      error instanceof Error && error.name === "TimeoutError"
+        ? "The assistant took too long to respond. Please try again."
+        : "The assistant is unreachable. Please try again.";
+    console.error("backend_proxy_failed", { path, requestId, error });
+    return NextResponse.json({ detail }, { status: 502 });
   }
-  const text = await response.text();
-  return new NextResponse(text, {
-    status: response.status,
-    headers: {
-      "Content-Type": contentType,
-    },
-  });
 }

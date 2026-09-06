@@ -6,7 +6,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
-from services.leads import detect_buying_intent, is_honeypot_submission  # noqa: E402
+from services.leads import (  # noqa: E402
+    detect_buying_intent,
+    detect_contact_intent,
+    is_honeypot_submission,
+)
 
 
 def test_honeypot_field_is_treated_as_spam() -> None:
@@ -25,3 +29,12 @@ def test_arabic_quote_intent() -> None:
 
 def test_no_intent_on_general_question() -> None:
     assert not detect_buying_intent("Where are your offices located?")
+
+
+def test_contact_intent_english() -> None:
+    assert detect_contact_intent("How can I contact Scenic Works?")
+    assert detect_contact_intent("What is your office location?")
+
+
+def test_contact_intent_arabic() -> None:
+    assert detect_contact_intent("كيف يمكنني التواصل مع سينيك ووركس؟")

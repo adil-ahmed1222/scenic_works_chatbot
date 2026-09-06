@@ -18,7 +18,7 @@ from services.language import (
     is_knowledge_fallback,
     service_error_message,
 )
-from services.leads import detect_buying_intent
+from services.leads import detect_buying_intent, detect_contact_intent
 from services.local_kb import retrieve_lexical, retrieve_local
 from services.memory import append_message, as_openai_messages, fetch_history
 from services.sessions import resolve_session
@@ -35,12 +35,25 @@ _COMPANY_OVERVIEW_QUERY = (
     "Scenic Works company overview who we are services "
     "exhibitions events fit-outs branding locations"
 )
+_CONTACT_QUERY = (
+    "Scenic Works contact locations Saudi Dubai website adroitiame.com "
+    "Chat Saudi Chat Dubai visit us"
+)
+CONTACT_FACTS = (
+    "Scenic Works locations: Saudi Arabia and Dubai. "
+    "Official website: https://adroitiame.com "
+    "(Chat Saudi and Chat Dubai). "
+    "To request a proposal or speak with the team, share your name, email, "
+    "phone, company, and project requirements using the in-chat form."
+)
 
 
 def _search_query(query: str) -> str:
     text = (query or "").strip()
     if _GREETING_RE.match(text):
         return _COMPANY_OVERVIEW_QUERY
+    if detect_contact_intent(text):
+        return _CONTACT_QUERY
     return text
 
 
@@ -151,7 +164,8 @@ def stream_answer(
     session, token = resolve_session(session_id, session_token)
     language = language_hint or detect_language(message)
     language_name = LANGUAGE_NAMES.get(language, "English")
-    show_lead = detect_buying_intent(message, language)
+    contact_intent = detect_contact_intent(message)
+    show_lead = detect_buying_intent(message, language) or contact_intent
     lead_prompt = LEAD_PROMPT_AR if language == "ar" else LEAD_PROMPT_EN
     perf("session_ms")
 
@@ -171,7 +185,25 @@ def stream_answer(
             logger.exception("Retrieval failed: %s", exc)
             retrieval_error = True
             chunks = []
+    if not chunks:
+        try:
+            chunks = retrieve_lexical(_search_query(message))
+            retrieval_error = False
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Lexical recovery failed: %s", exc)
     perf("context_ms")
+
+    if contact_intent:
+        chunks = [
+            {
+                "content": CONTACT_FACTS,
+                "title": "Contact Scenic Works",
+                "source_url": "https://adroitiame.com",
+                "similarity": 1.0,
+            },
+            *chunks,
+        ]
+        show_lead = True
 
     if retrieval_error and not chunks:
         answer = service_error_message(language)

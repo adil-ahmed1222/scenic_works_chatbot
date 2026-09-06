@@ -130,7 +130,10 @@ export function requestVoice(
 ) {
   return request<{ audio_url: string; language: string; voice_id: string }>(
     "/voice",
-    payload,
+    {
+      ...payload,
+      text: payload.text.slice(0, 1500),
+    },
     signal
   );
 }

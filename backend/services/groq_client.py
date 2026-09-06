@@ -7,6 +7,7 @@ import time
 from groq import Groq
 
 from config import get_settings
+from services.http_retry import call_with_backoff
 
 logger = logging.getLogger("scenicworks.groq")
 _client: Groq | None = None
@@ -18,7 +19,14 @@ def get_groq() -> Groq:
         settings = get_settings()
         if not settings.groq_api_key:
             raise RuntimeError("GROQ_API_KEY is not configured.")
-        _client = Groq(api_key=settings.groq_api_key)
+        try:
+            _client = Groq(
+                api_key=settings.groq_api_key,
+                timeout=45.0,
+                max_retries=2,
+            )
+        except TypeError:
+            _client = Groq(api_key=settings.groq_api_key)
     return _client
 
 
@@ -26,17 +34,25 @@ def complete(messages: list[dict], *, temperature: float | None = None) -> str:
     return "".join(complete_stream(messages, temperature=temperature)).strip()
 
 
-def complete_stream(
-    messages: list[dict], *, temperature: float | None = None
-):
+def _open_stream(messages: list[dict], temperature: float | None):
     settings = get_settings()
     client = get_groq()
-    stream = client.chat.completions.create(
+    return client.chat.completions.create(
         model=settings.groq_model,
         messages=messages,
         temperature=settings.groq_temperature if temperature is None else temperature,
         max_tokens=settings.groq_max_tokens,
         stream=True,
+    )
+
+
+def complete_stream(
+    messages: list[dict], *, temperature: float | None = None
+):
+    stream = call_with_backoff(
+        lambda: _open_stream(messages, temperature),
+        attempts=3,
+        label="groq.stream",
     )
     first = True
     started = time.perf_counter()
@@ -60,12 +76,16 @@ def complete_stream(
 def complete_json(messages: list[dict]) -> str:
     settings = get_settings()
     client = get_groq()
-    response = client.chat.completions.create(
-        model=settings.groq_model,
-        messages=messages,
-        temperature=0,
-        max_tokens=256,
-        response_format={"type": "json_object"},
+    response = call_with_backoff(
+        lambda: client.chat.completions.create(
+            model=settings.groq_model,
+            messages=messages,
+            temperature=0,
+            max_tokens=256,
+            response_format={"type": "json_object"},
+        ),
+        attempts=3,
+        label="groq.json",
     )
     return response.choices[0].message.content or "{}"
 

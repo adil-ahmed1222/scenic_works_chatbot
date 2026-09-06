@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
-from services.local_kb import cosine_similarity, rank_vectors  # noqa: E402
+from services.local_kb import cosine_similarity, rank_lexical, rank_vectors  # noqa: E402
 
 
 def test_cosine_of_identical_vectors() -> None:
@@ -26,3 +26,13 @@ def test_rank_vectors_respects_threshold_and_order() -> None:
     )
     assert [item["id"] for item in ranked] == ["high"]
     assert ranked[0]["similarity"] == 1.0
+
+
+def test_lexical_rank_prefers_matching_content() -> None:
+    items = [
+        {"id": "a", "title": "Services", "content": "Exhibition stands and events"},
+        {"id": "b", "title": "Other", "content": "Warehouse storage only"},
+    ]
+    ranked = rank_lexical("exhibition stand designed and built", items, top_k=2)
+    assert ranked[0]["id"] == "a"
+    assert ranked[0]["similarity"] > 0

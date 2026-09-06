@@ -46,9 +46,9 @@ export function LeadForm({
         website: String(form.get("website") || ""),
       });
       setDone(true);
-      onDone?.();
-    } catch {
-      setError(t.error);
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : "";
+      setError(detail && !detail.startsWith("{") ? detail : t.error);
     } finally {
       setPending(false);
     }

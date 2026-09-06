@@ -292,7 +292,8 @@ export function ChatWidget({
       audio.onended = () => setPlayingLast(false);
       audio.onerror = () => setPlayingLast(false);
       await audio.play();
-    } catch {
+    } catch (error) {
+      console.error("voice_playback_failed", error);
       setPlayingLast(false);
     }
   }
@@ -390,7 +391,16 @@ export function ChatWidget({
         className="adroit-scroll flex-1 space-y-4 overflow-y-auto px-5 py-5"
       >
         {messages.length === 0 ? (
-          <WelcomeHero language={language} onSelect={(prompt) => void ask(prompt)} />
+          <WelcomeHero
+            language={language}
+            onSelect={(prompt, options) => {
+              if (options?.openLead) {
+                setShowLead(true);
+                setLeadHint(t.leadHint);
+              }
+              void ask(prompt);
+            }}
+          />
         ) : (
           messages.map((message) => (
             <MessageBubble

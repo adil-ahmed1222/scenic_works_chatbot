@@ -12,7 +12,7 @@ export function WelcomeHero({
   onSelect,
 }: {
   language: Lang;
-  onSelect: (prompt: string) => void;
+  onSelect: (prompt: string, options?: { openLead?: boolean }) => void;
 }) {
   const t = copy[language];
   const arabic = language === "ar";
@@ -68,7 +68,7 @@ export function WelcomeHero({
                 transition={{ delay: 0.08 * index, duration: 0.35 }}
                 whileHover={{ y: -2, scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => onSelect(action.prompt)}
+                onClick={() => onSelect(action.prompt, { openLead: action.openLead })}
                 className="rounded-2xl border border-adroit-border bg-adroit-card p-4 text-start shadow-sm transition-colors hover:border-adroit-gold/50 hover:bg-[#161616]"
               >
                 <Icon className="mb-3 h-5 w-5 text-adroit-gold" />

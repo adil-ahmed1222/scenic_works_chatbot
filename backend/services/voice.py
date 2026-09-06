@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import base64
 import logging
 import uuid
 from pathlib import Path
 
 import httpx
 from config import get_settings
+from services.http_retry import RETRY_STATUSES, call_with_backoff
 from services.supabase_client import get_supabase
 
 logger = logging.getLogger("scenicworks.voice")
@@ -25,10 +27,13 @@ def synthesize(text: str, language: str = "en") -> tuple[bytes, str]:
     settings = get_settings()
     if not settings.elevenlabs_api_key:
         raise RuntimeError("ELEVENLABS_API_KEY is not configured.")
+    cleaned = " ".join((text or "").split())
+    if not cleaned:
+        raise RuntimeError("Voice text is empty.")
     voice_id = _voice_id(language)
     url = ELEVEN_URL.format(voice_id=voice_id)
     payload = {
-        "text": text[:1500],
+        "text": cleaned[:1500],
         "model_id": settings.elevenlabs_model,
         "voice_settings": {"stability": 0.4, "similarity_boost": 0.75},
     }
@@ -37,25 +42,37 @@ def synthesize(text: str, language: str = "en") -> tuple[bytes, str]:
         "accept": "audio/mpeg",
         "content-type": "application/json",
     }
-    with httpx.Client(timeout=60) as client:
-        response = client.post(url, headers=headers, json=payload)
-        if response.status_code == 401:
-            logger.error(
-                "ElevenLabs rejected ELEVENLABS_API_KEY (401 invalid_api_key). "
-                "Create a new key at https://elevenlabs.io/app/settings/api-keys "
-                "and set it in backend/.env, then restart the API."
+
+    def _request() -> httpx.Response:
+        with httpx.Client(timeout=45) as client:
+            response = client.post(url, headers=headers, json=payload)
+        if response.status_code in RETRY_STATUSES:
+            raise httpx.HTTPStatusError(
+                f"retryable {response.status_code}",
+                request=response.request,
+                response=response,
             )
-            raise RuntimeError(
-                "ElevenLabs API key is invalid. Update ELEVENLABS_API_KEY in backend/.env."
-            )
-        if response.status_code >= 400:
-            logger.error(
-                "ElevenLabs TTS failed (%s): %s",
-                response.status_code,
-                response.text[:300],
-            )
-            raise RuntimeError("ElevenLabs voice synthesis failed.")
-        return response.content, voice_id
+        return response
+
+    response = call_with_backoff(_request, attempts=3, label="elevenlabs.tts")
+    if response.status_code == 401:
+        logger.error("ElevenLabs rejected ELEVENLABS_API_KEY (401 invalid_api_key).")
+        raise RuntimeError(
+            "ElevenLabs API key is invalid. Update ELEVENLABS_API_KEY on the API host."
+        )
+    if response.status_code >= 400:
+        logger.error(
+            "ElevenLabs TTS failed (%s): %s",
+            response.status_code,
+            response.text[:300],
+        )
+        raise RuntimeError("ElevenLabs voice synthesis failed.")
+    audio = response.content
+    if len(audio) < 64 or not (audio.startswith(b"ID3") or audio.startswith(b"\xff")):
+        logger.error("ElevenLabs returned a non-audio payload (%s bytes)", len(audio))
+        raise RuntimeError("ElevenLabs voice synthesis failed.")
+    logger.info("ElevenLabs synthesized %s bytes voice=%s lang=%s", len(audio), voice_id, language)
+    return audio, voice_id
 
 
 def _upload_supabase(audio: bytes, filename: str) -> str | None:
@@ -70,9 +87,11 @@ def _upload_supabase(audio: bytes, filename: str) -> str | None:
         public = client.storage.from_(settings.supabase_storage_bucket).get_public_url(
             filename
         )
+        if public and public.startswith("https://"):
+            return public.split("?")[0]
         return public
     except Exception as exc:  # noqa: BLE001
-        logger.warning("Supabase audio upload failed, using local fallback: %s", exc)
+        logger.warning("Supabase audio upload failed, using inline audio: %s", exc)
         return None
 
 
@@ -83,8 +102,17 @@ def create_audio_url(text: str, language: str = "en") -> tuple[str, str]:
     if remote:
         return remote, voice_id
 
-    AUDIO_DIR.mkdir(parents=True, exist_ok=True)
-    path = AUDIO_DIR / filename
-    path.write_bytes(audio)
     settings = get_settings()
-    return f"{settings.backend_url.rstrip('/')}/static/audio/{filename}", voice_id
+    if settings.app_env != "production":
+        AUDIO_DIR.mkdir(parents=True, exist_ok=True)
+        path = AUDIO_DIR / filename
+        path.write_bytes(audio)
+        local = f"{settings.backend_url.rstrip('/')}/static/audio/{filename}"
+        if "localhost" in local or "127.0.0.1" in local:
+            encoded = base64.b64encode(audio).decode("ascii")
+            return f"data:audio/mpeg;base64,{encoded}", voice_id
+        return local, voice_id
+
+    encoded = base64.b64encode(audio).decode("ascii")
+    logger.info("Serving voice as data URL (%s bytes)", len(audio))
+    return f"data:audio/mpeg;base64,{encoded}", voice_id

@@ -46,7 +46,10 @@ export function MessageBubble({
       });
       const audio = new Audio(result.audio_url);
       audio.onended = () => setPlaying(false);
-      audio.onerror = () => setPlaying(false);
+      audio.onerror = () => {
+        setPlaying(false);
+        setVoiceError(true);
+      };
       await audio.play();
     } catch {
       setPlaying(false);
